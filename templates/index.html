@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karsten Zenk – Portfolio</title>
+  
+  <meta name="description" content="Portfolio von Karsten Zenk - Experte für Projektmanagement, Organisationsentwicklung und strategische Transformation.">
+  <meta name="author" content="Karsten Zenk">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  
+  <meta property="og:title" content="Karsten Zenk - Portfolio">
+  <meta property="og:description" content="Erfahrener Projektmanager und Organisationsentwickler">
+  <meta property="og:image" content="{{ url_for('static', filename='images/karsten-profile.jpg', _external=True) }}">
+  <meta property="og:type" content="website">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta name="theme-color" content="#222">
+</head>
+
+<body>
+
+  <!-- 1. HEADER -->
+  <header class="header" aria-label="Seitenkopf">
+
+    <!-- NEU: Hamburger Menü-Button, nur auf Mobile sichtbar -->
+    <button id="mobile-menu-toggle" class="mobile-menu-button" aria-label="Menü umschalten">
+      <div class="hamburger-icon"></div>
+    </button>
+    
+    <!-- Sprachumschalter (unverändert) -->
+    <div class="language-switch">
+      <a href="?lang=de" class="lang-button" title="Deutsch" aria-label="Deutsch">🇩🇪</a>
+      <a href="?lang=en" class="lang-button" title="English" aria-label="English">🇬🇧</a>
+    </div>
+
+    <!-- Slideshow-Bilder (unverändert) -->
+    <div class="slideshow">
+      <img src="{{ url_for('static', filename='images/header1.jpg') }}" class="slide active">
+      <img src="{{ url_for('static', filename='images/header2.jpg') }}" class="slide">
+      <img src="{{ url_for('static', filename='images/header3.jpg') }}" class="slide">
+    </div>
+
+    <!-- Text über dem Bild (unverändert) -->
+    <div class="header-text">
+      {% if lang == 'de' %}
+        {% include 'partials/header.de.html' %}
+      {% else %}
+        {% include 'partials/header.en.html' %}
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- KORREKTUR: Wrapper für linken, mittleren und rechten Bereich -->
+  <div class="content-wrapper">
+
+    <!-- NEU: Container, der die Navigation auf Mobile umschließt -->
+    <div id="mobile-nav-container" class="mobile-nav-container">
+      <!-- 2a. NAV-LEFT -->
+      <nav class="nav-left" aria-label="{% if lang == 'de' %}Hauptnavigation{% else %}Main navigation{% endif %}">
+        {% if lang == 'de' %}
+          {% include 'partials/nav.de.html' %}
+        {% else %}
+          {% include 'partials/nav.en.html' %}
+        {% endif %}
+      </nav>
+
+      <!-- 2c. NAV-RIGHT -->
+      <nav class="nav-right" aria-label="{% if lang == 'de' %}Fachnavigation{% else %}Domain navigation{% endif %}">
+        {% if lang == 'de' %}
+          {% include 'partials/accordion.de.html' %}
+        {% else %}
+          {% include 'partials/accordion.en.html' %}
+        {% endif %}
+      </nav>
+    </div>
+
+    <!-- 2b. VORSCHAU (bleibt außerhalb) -->
+    <main id="preview" aria-label="Vorschaufenster – Inhalt zur Auswahl">
+      <div id="preview-content">
+        <figure class="profile-figure">
+          <img src="{{ url_for('static', filename='images/karsten-profile.jpg') }}" alt="Profilbild von Karsten Zenk"
+            class="profile-image">
+        </figure>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- 3. FOOTER (unverändert) -->
+  <footer aria-label="Fußbereich">
+    <p>© 2025 Karsten Zenk – All rights reserved.</p>
+  </footer>
+
+  <!-- 4. JAVASCRIPT -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

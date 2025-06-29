@@ -1,0 +1,37 @@
+# Byte-compiled / optimierte Dateien (von Python erzeugt)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / Packaging (von Build-Tools erzeugt)
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtuelle Umgebungen (lokale Installationen)
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak
+venv.bak
+
+# Sensible Konfigurationsdateien
+# Wichtig, um z.B. API-Schlüssel geheim zu halten.
+*.env
+config.ini

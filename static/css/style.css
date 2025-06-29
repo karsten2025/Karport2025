@@ -1,0 +1,531 @@
+/* ===== MOBILE FIRST APPROACH ===== */
+
+/* Full-Page-Layout */
+html {
+  height: 100%;
+}
+
+/* ============================================= */
+/* PARAMETERPOOL (Benutzerdefinierte Variablen)  */
+/* ============================================= */
+:root {
+  --button-spacing: 0.5rem; /* Abstand zwischen den Navigations-Buttons */
+  --accent-color: #ff7e5f;   /* Ihre Akzentfarbe (für Hover & Icons) */
+  --divider-color: var(--accent-color);
+  --divider-thickness: 2px;
+}
+/* ============================================= */
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden; /* Verhindert das Scrollen der gesamten Seite */
+}
+
+/* FONTS - aus Original übernommen */
+@font-face {
+  font-family: 'Corinthiago';
+  src: url('/static/fonts/Corinthiago.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.corinthiago {
+  font-family: 'Corinthiago', cursive;
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: relative;
+  width: 100%;
+  height: auto;
+  flex-shrink: 0;
+  flex-direction: column;
+  overflow: hidden;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.header-text {
+  text-align: center;
+  z-index: 10;
+  font-size: clamp(0.9rem, 2.5vw, 1.3rem); /* responsive */
+  margin-top: 0;
+  margin-bottom: 0rem;
+  padding: 0 1rem;  /* gibt Luft auf kleinen Screens */
+}
+
+/* SLIDESHOW - aus Original übernommen */
+.slideshow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+/* ===== SPRACHAUSWAHL ===== */
+.language-switch {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1003; /* Über allem */
+}
+.lang-button {
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 0.3rem;
+  text-decoration: none;
+  color: black;
+  border: 2px solid transparent;
+}
+.lang-button:hover,
+.lang-button:focus {
+  background: #ffd54f;
+  border-color: #333;
+}
+
+/* ===== RESPONSIVE: HAMBURGER MENÜ (NEU) ===== */
+.mobile-menu-button {
+  display: flex; /* Auf Mobile anzeigen */
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1002; /* Muss über dem Nav-Container liegen */
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.hamburger-icon {
+  position: relative;
+  width: 24px;
+  height: 2px;
+  background-color: #333;
+  transition: all 0.3s ease;
+}
+.hamburger-icon::before,
+.hamburger-icon::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background-color: #333;
+  left: 0;
+  transition: all 0.3s ease;
+}
+.hamburger-icon::before { top: -8px; }
+.hamburger-icon::after { top: 8px; }
+
+/* Hamburger-Animation zu 'X', wenn Menü offen ist */
+body.nav-open .hamburger-icon { background-color: transparent; }
+body.nav-open .hamburger-icon::before { transform: rotate(45deg) translate(5px, 6px); }
+body.nav-open .hamburger-icon::after { transform: rotate(-45deg) translate(5px, -6px); }
+
+
+/* ===== CONTENT WRAPPER - Mobile First ===== */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: white;
+  overflow: hidden;
+}
+
+/* Container für mobile Navigation (NEU) */
+.mobile-nav-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  z-index: 1001; /* Liegt unter dem Button, aber über dem Inhalt */
+  display: flex;
+  flex-direction: column;
+  padding: 60px 1rem 1rem 1rem;
+  transform: translateX(-100%); /* Standardmäßig versteckt */
+  transition: transform 0.4s ease-in-out;
+}
+/* Wenn das Menü offen ist, wird der Container sichtbar */
+body.nav-open .mobile-nav-container {
+  transform: translateX(0);
+}
+
+
+/* ===== NAVIGATION ALLGEMEIN ===== */
+/* Auf Mobile sind die Navigationsleisten Teil des ausklappbaren Menüs */
+.nav-left,
+.nav-right {
+  width: 100%;
+  background: transparent; /* Hintergrund kommt vom Container */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 0; /* Padding kommt vom Container */
+  overflow-y: auto;
+}
+
+/* Navigation Buttons - Mobile optimiert */
+.nav-left button,
+.nav-right button,
+.accordion-item {
+  background: #FBFBFB;
+  color: black;
+  border: none;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  word-break: break-word;
+}
+
+/* REGEL FÜR EINHEITLICHEN ABSTAND */
+.nav-left > *,
+.nav-right > * {
+  margin-bottom: var(--button-spacing);
+}
+.nav-left > *:last-child,
+.nav-right > *:last-child {
+  margin-bottom: 0;
+}
+
+
+/* Hover-Effekte */
+.nav-left button:hover,
+.nav-right button:hover,
+.accordion-item:hover {
+  background: var(--accent-color);
+}
+
+
+/* ===== PREVIEW BEREICH ===== */
+#preview {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+  background-color: #FBFBFB;
+  overflow-y: auto;
+  min-height: 300px;
+}
+
+#preview-content {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.profile-image {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Stile für die Textinhalte in der Vorschau */
+.profile-subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  text-align: left;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.profile-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+.soft-divider {
+  height: var(--divider-thickness);
+  background: linear-gradient(to right, transparent, var(--divider-color), transparent);
+  margin: 2rem 0;
+  border: none;
+}
+
+
+/* ===== TABLET (ab 768px) ===== */
+@media (min-width: 768px) {
+  /* Hamburger-Menü auf größeren Bildschirmen ausblenden */
+  .mobile-menu-button {
+    display: none;
+  }
+  
+  .content-wrapper {
+    flex-direction: row;
+  }
+  
+  /* KORREKTUR: Dies ist die Hauptänderung für das Desktop-Layout */
+  /* Der mobile Container gibt seine Kinder an das Flexbox-Layout frei */
+  .mobile-nav-container {
+    display: contents;
+  }
+
+  /* Navigationsleisten bekommen ihr Desktop-Styling zurück */
+  .nav-left,
+  .nav-right {
+    background: #222;
+    padding: 1rem;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 250px;
+    flex-shrink: 0;
+  }
+
+  /* KORREKTUR: Visuelle Neuordnung der Elemente */
+  .nav-left { order: 1; }
+  #preview   { order: 2; }
+  .nav-right { order: 3; }
+}
+
+/* ===== DESKTOP (ab 1024px) ===== */
+@media (min-width: 1024px) {
+  .nav-left button,
+  .accordion-item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #preview {
+    padding: 2rem;
+  }
+}
+
+/* ===== GROSSE BILDSCHIRME (ab 1440px) ===== */
+@media (min-width: 1440px) {
+  .nav-left,
+  .nav-right {
+    width: 300px;
+    padding: 1.5rem;
+  }
+
+  .nav-left button,
+  .accordion-item {
+    font-size: 15px;
+    padding: 0.875rem 1.25rem;
+  }
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  background: #111;
+  color: white;
+  padding: 1rem;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ===== Header für rechte Navigation (nur Desktop) ===== */
+.nav-header {
+  text-align: center;
+  margin-bottom: var(--button-spacing); /* Nutzt die Variable */
+}
+.nav-header .titel-box {
+  background-color: white;
+  border: 2px solid #333;
+  padding: 0.625rem 2rem;
+  font-weight: bold;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: black;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+}
+.nav-header .dreieck {
+  width: 0;
+  height: 0;
+  border-left: 2rem solid transparent;
+  border-right: 2rem solid transparent;
+  border-top: 0.8rem solid white;
+  margin: 0 auto;
+}
+
+/* Schrift in den rechten Buttons zentrieren */
+.nav-right button.accordion-button {
+  text-align: center;
+}
+
+/* Accordion als Overlay mit Scroll-Funktion */
+.accordion-container {
+  position: relative;
+}
+
+.file-list {
+  list-style: none;
+  padding: 0.5rem;
+  margin-top: 5px; 
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 100%; 
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  max-height: 45vh;
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+}
+
+/* Styling für den Scrollbalken */
+.file-list::-webkit-scrollbar {
+  width: 8px;
+}
+.file-list::-webkit-scrollbar-track {
+  background: #444;
+  border-radius: 4px;
+}
+.file-list::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+}
+
+.accordion-container:hover .file-list {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.file-list-item a {
+  display: block;
+  background-color: #333;
+  color: #f0f0f0;
+  padding: 0.75rem 1rem;
+  margin-bottom: 2px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.file-list-item a:hover {
+  background-color: var(--accent-color);
+  color: black;
+}
+
+/* ============================================= */
+/* STYLES FÜR KONTAKTFORMULAR               */
+/* ============================================= */
+.contact-container { max-width: 600px; margin: 0 auto; text-align: left; padding: 1rem; }
+.contact-title { font-family: 'Corinthiago', cursive; text-align: center; font-size: clamp(2.5rem, 6vw, 3.5rem); margin-bottom: 0.5rem; }
+.contact-subtitle { text-align: center; margin-bottom: 1rem; color: #666; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 600; }
+.form-group input, .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; font-family: sans-serif; transition: border-color 0.3s, box-shadow 0.3s; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.2); }
+.form-group textarea { resize: vertical; min-height: 120px; }
+.submit-button { display: block; width: 100%; padding: 1rem; background: #222; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s; }
+.submit-button:hover { background: var(--accent-color); }
+.divider-or { display: flex; align-items: center; text-align: center; color: #aaa; margin: 2rem 0; }
+.divider-or::before, .divider-or::after { content: ''; flex: 1; border-bottom: 1px solid #ddd; }
+.divider-or:not(:empty)::before { margin-right: .5em; }
+.divider-or:not(:empty)::after { margin-left: .5em; }
+
+/* Styling für das Telefon-Icon */
+.phone-call-container { text-align: center; margin-bottom: 2rem; }
+.phone-icon-link {
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.phone-icon-link:hover { transform: scale(1.1); }
+.phone-icon-svg {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  fill: var(--accent-color);
+  animation: vibrate 0.5s infinite;
+}
+
+/* Vibrations-Animation für den Hörer */
+@keyframes vibrate {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+  25% { transform: translate(-50%, -50%) rotate(-5deg); }
+  75% { transform: translate(-50%, -50%) rotate(5deg); }
+}
+
+/* Pulsierende Ringe */
+.phone-icon-link::before,
+.phone-icon-link::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 2px solid var(--accent-color);
+  border-radius: 50%;
+  animation: pulsate 1.5s infinite;
+  opacity: 0;
+}
+.phone-icon-link::after {
+  animation-delay: 0.75s;
+}
+@keyframes pulsate {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
