@@ -9,7 +9,7 @@ html {
 /* PARAMETERPOOL (Benutzerdefinierte Variablen)  */
 /* ============================================= */
 :root {
-  --button-spacing: 0.5rem; /* Abstand zwischen den Navigations-Buttons */
+  --button-spacing: 1.5rem; /* Abstand zwischen den Navigations-Buttons */
   --accent-color: #ff7e5f;   /* Ihre Akzentfarbe (für Hover & Icons) */
   --divider-color: var(--accent-color);
   --divider-thickness: 2px;
