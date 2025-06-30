@@ -43,4 +43,4 @@ def list_certificates(category):
 
 # --- Dieser Block bleibt unverändert ---
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
