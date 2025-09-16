@@ -27,7 +27,18 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden; /* Verhindert das Scrollen der gesamten Seite */
+}
+
+/* RESPONSIVE: Nur auf Desktop soll der Body nicht scrollen */
+@media (min-width: 768px) {
+  body {
+    overflow: hidden;
+  }
+}
+
+/* RESPONSIVE: Verhindert das Scrollen des Hintergrunds, wenn das mobile Menü offen ist */
+body.nav-open {
+    overflow: hidden;
 }
 
 /* FONTS - aus Original übernommen */
@@ -38,14 +49,14 @@ body {
   font-style: normal;
 }
 
+/* RESPONSIVE: Schriftart und Abstände auf Mobile reduzieren */
 .corinthiago {
   font-family: 'Corinthiago', cursive;
-  font-size: 3.5rem;
   font-weight: bold;
-  margin-top: 0.1rem;
-  margin-bottom: 0.1rem;
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
+  font-size: clamp(2.8rem, 10vw, 3.5rem); /* Schriftgröße leicht angepasst */
+  line-height: 1.2; /* KORREKTUR: Zeilenabstand erhöht */
+  margin: 0;
+  padding: 0.2em 0; /* Gibt der Schrift etwas Luft nach oben/unten */
 }
 
 /* ===== HEADER ===== */
@@ -61,16 +72,17 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 1rem; /* RESPONSIVE: Weniger Padding auf Mobile */
+  min-height: 150px;
 }
 
 .header-text {
   text-align: center;
   z-index: 10;
-  font-size: clamp(0.9rem, 2.5vw, 1.3rem); /* responsive */
-  margin-top: 0;
-  margin-bottom: 0rem;
-  padding: 0 1rem;  /* gibt Luft auf kleinen Screens */
+  font-size: clamp(0.9rem, 2.5vw, 1.3rem);
+  margin-top: 0.5rem; /* Weniger Abstand nach oben */
+  margin-bottom: 0;
+  padding: 0 1rem;
 }
 
 /* SLIDESHOW - aus Original übernommen */
@@ -104,15 +116,22 @@ body {
   top: 0.5rem;
   right: 0.5rem;
   z-index: 1003; /* Über allem */
+  display: flex; /* NEU */
+  gap: 0.25rem; /* NEU */
 }
 .lang-button {
-  padding: 0.5rem;
-  font-size: 1.2rem;
+  /* KORREKTUR: Padding und Schriftgröße reduziert für kleinere Buttons */
+  padding: 0.15rem;
+  font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 0.3rem;
   text-decoration: none;
   color: black;
-  border: 2px solid transparent;
+  /* RESPONSIVE: Minimale Umrandung für Flaggen */
+  border: 1px solid rgba(0,0,0,0.1);
+  display: flex; /* Hilft bei der Zentrierung des Emojis */
+  align-items: center;
+  justify-content: center;
 }
 .lang-button:hover,
 .lang-button:focus {
@@ -120,9 +139,9 @@ body {
   border-color: #333;
 }
 
-/* ===== RESPONSIVE: HAMBURGER MENÜ (NEU) ===== */
+/* ===== RESPONSIVE: HAMBURGER MENÜ ===== */
 .mobile-menu-button {
-  display: flex; /* Auf Mobile anzeigen */
+  display: none; /* Standardmäßig auf Desktop ausblenden */
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
@@ -173,18 +192,20 @@ body.nav-open .hamburger-icon::after { transform: rotate(-45deg) translate(5px, 
 
 /* Container für mobile Navigation (NEU) */
 .mobile-nav-container {
-  position: absolute;
+  position: fixed; /* Geändert von absolute zu fixed */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: #222;
-  z-index: 1001; /* Liegt unter dem Button, aber über dem Inhalt */
+  z-index: 1001;
   display: flex;
   flex-direction: column;
   padding: 60px 1rem 1rem 1rem;
-  transform: translateX(-100%); /* Standardmäßig versteckt */
+  transform: translateX(-100%);
   transition: transform 0.4s ease-in-out;
+  /* KORREKTUR: Der Container scrollt jetzt, nicht die Kinder */
+  overflow-y: auto;
 }
 /* Wenn das Menü offen ist, wird der Container sichtbar */
 body.nav-open .mobile-nav-container {
@@ -193,17 +214,28 @@ body.nav-open .mobile-nav-container {
 
 
 /* ===== NAVIGATION ALLGEMEIN ===== */
-/* Auf Mobile sind die Navigationsleisten Teil des ausklappbaren Menüs */
 .nav-left,
 .nav-right {
   width: 100%;
-  background: transparent; /* Hintergrund kommt vom Container */
+  background: transparent;
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 0; /* Padding kommt vom Container */
-  overflow-y: auto;
+  padding: 0;
+  /* KORREKTUR: Kinder scrollen nicht mehr selbst */
+  overflow-y: visible;
 }
+
+/* KORREKTUR: Neue, stabile Trennlinie */
+.nav-left::after {
+    content: '';
+    display: block;
+    height: var(--divider-thickness);
+    background: var(--accent-color);
+    margin: 1.5rem 10% 1.5rem 10%; /* Abstand oben/unten und seitlich */
+    width: 80%;
+}
+
 
 /* Navigation Buttons - Mobile optimiert */
 .nav-left button,
@@ -307,13 +339,10 @@ body.nav-open .mobile-nav-container {
     flex-direction: row;
   }
   
-  /* KORREKTUR: Dies ist die Hauptänderung für das Desktop-Layout */
-  /* Der mobile Container gibt seine Kinder an das Flexbox-Layout frei */
   .mobile-nav-container {
     display: contents;
   }
 
-  /* Navigationsleisten bekommen ihr Desktop-Styling zurück */
   .nav-left,
   .nav-right {
     background: #222;
@@ -322,12 +351,24 @@ body.nav-open .mobile-nav-container {
     flex-wrap: nowrap;
     width: 250px;
     flex-shrink: 0;
+    overflow-y: auto; /* Scrollen auf Desktop wieder aktivieren */
+  }
+  .nav-left::after {
+      display: none;
   }
 
-  /* KORREKTUR: Visuelle Neuordnung der Elemente */
   .nav-left { order: 1; }
   #preview   { order: 2; }
   .nav-right { order: 3; }
+  
+  .header {
+      min-height: auto;
+      padding: 2rem 1rem;
+  }
+  footer {
+      padding: 1rem;
+      font-size: 14px;
+  }
 }
 
 /* ===== DESKTOP (ab 1024px) ===== */
@@ -364,15 +405,15 @@ footer {
   text-align: center;
   background: #111;
   color: white;
-  padding: 1rem;
-  font-size: 14px;
+  padding: 0.5rem;
+  font-size: 12px;
   flex-shrink: 0;
 }
 
 /* ===== Header für rechte Navigation (nur Desktop) ===== */
 .nav-header {
   text-align: center;
-  margin-bottom: var(--button-spacing); /* Nutzt die Variable */
+  margin-bottom: var(--button-spacing);
 }
 .nav-header .titel-box {
   background-color: white;
@@ -528,4 +569,11 @@ footer {
 @keyframes pulsate {
   0% { transform: scale(1); opacity: 0.6; }
   100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* RESPONSIVE: Media Query, um Hamburger-Button auf Mobilgeräten anzuzeigen */
+@media (max-width: 767px) {
+  .mobile-menu-button {
+    display: flex;
+  }
 }
