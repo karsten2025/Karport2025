@@ -10,12 +10,11 @@ html {
 /* ============================================= */
 :root {
   --button-spacing: 1.5rem; /* Abstand zwischen den Navigations-Buttons */
-  --accent-color: #ff7e5f;   /* Ihre Akzentfarbe (für Hover & Icons) */
+  --accent-color: #ff7e5f; /* Ihre Akzentfarbe (für Hover & Icons) */
   --divider-color: var(--accent-color);
   --divider-thickness: 2px;
 }
 /* ============================================= */
-
 
 * {
   box-sizing: border-box;
@@ -38,20 +37,20 @@ body {
 
 /* RESPONSIVE: Verhindert das Scrollen des Hintergrunds, wenn das mobile Menü offen ist */
 body.nav-open {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 /* FONTS - aus Original übernommen */
 @font-face {
-  font-family: 'Corinthiago';
-  src: url('/static/fonts/Corinthiago.ttf') format('truetype');
+  font-family: "Corinthiago";
+  src: url("/static/fonts/Corinthiago.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 /* RESPONSIVE: Schriftart und Abstände auf Mobile reduzieren */
 .corinthiago {
-  font-family: 'Corinthiago', cursive;
+  font-family: "Corinthiago", cursive;
   font-weight: bold;
   font-size: clamp(2.8rem, 10vw, 3.5rem); /* Schriftgröße leicht angepasst */
   line-height: 1.2; /* KORREKTUR: Zeilenabstand erhöht */
@@ -128,7 +127,7 @@ body.nav-open {
   text-decoration: none;
   color: black;
   /* RESPONSIVE: Minimale Umrandung für Flaggen */
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   display: flex; /* Hilft bei der Zentrierung des Emojis */
   align-items: center;
   justify-content: center;
@@ -164,7 +163,7 @@ body.nav-open {
 }
 .hamburger-icon::before,
 .hamburger-icon::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 24px;
   height: 2px;
@@ -172,14 +171,23 @@ body.nav-open {
   left: 0;
   transition: all 0.3s ease;
 }
-.hamburger-icon::before { top: -8px; }
-.hamburger-icon::after { top: 8px; }
+.hamburger-icon::before {
+  top: -8px;
+}
+.hamburger-icon::after {
+  top: 8px;
+}
 
 /* Hamburger-Animation zu 'X', wenn Menü offen ist */
-body.nav-open .hamburger-icon { background-color: transparent; }
-body.nav-open .hamburger-icon::before { transform: rotate(45deg) translate(5px, 6px); }
-body.nav-open .hamburger-icon::after { transform: rotate(-45deg) translate(5px, -6px); }
-
+body.nav-open .hamburger-icon {
+  background-color: transparent;
+}
+body.nav-open .hamburger-icon::before {
+  transform: rotate(45deg) translate(5px, 6px);
+}
+body.nav-open .hamburger-icon::after {
+  transform: rotate(-45deg) translate(5px, -6px);
+}
 
 /* ===== CONTENT WRAPPER - Mobile First ===== */
 .content-wrapper {
@@ -212,7 +220,6 @@ body.nav-open .mobile-nav-container {
   transform: translateX(0);
 }
 
-
 /* ===== NAVIGATION ALLGEMEIN ===== */
 .nav-left,
 .nav-right {
@@ -228,20 +235,19 @@ body.nav-open .mobile-nav-container {
 
 /* KORREKTUR: Neue, stabile Trennlinie */
 .nav-left::after {
-    content: '';
-    display: block;
-    height: var(--divider-thickness);
-    background: var(--accent-color);
-    margin: 1.5rem 10% 1.5rem 10%; /* Abstand oben/unten und seitlich */
-    width: 80%;
+  content: "";
+  display: block;
+  height: var(--divider-thickness);
+  background: var(--accent-color);
+  margin: 1.5rem 10% 1.5rem 10%; /* Abstand oben/unten und seitlich */
+  width: 80%;
 }
-
 
 /* Navigation Buttons - Mobile optimiert */
 .nav-left button,
 .nav-right button,
 .accordion-item {
-  background: #FBFBFB;
+  background: #fbfbfb;
   color: black;
   border: none;
   width: 100%;
@@ -269,14 +275,12 @@ body.nav-open .mobile-nav-container {
   margin-bottom: 0;
 }
 
-
 /* Hover-Effekte */
 .nav-left button:hover,
 .nav-right button:hover,
 .accordion-item:hover {
   background: var(--accent-color);
 }
-
 
 /* ===== PREVIEW BEREICH ===== */
 #preview {
@@ -285,7 +289,7 @@ body.nav-open .mobile-nav-container {
   justify-content: center;
   align-items: flex-start;
   padding: 1rem;
-  background-color: #FBFBFB;
+  background-color: #fbfbfb;
   overflow-y: auto;
   min-height: 300px;
 }
@@ -322,11 +326,15 @@ body.nav-open .mobile-nav-container {
 }
 .soft-divider {
   height: var(--divider-thickness);
-  background: linear-gradient(to right, transparent, var(--divider-color), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--divider-color),
+    transparent
+  );
   margin: 2rem 0;
   border: none;
 }
-
 
 /* ===== TABLET (ab 768px) ===== */
 @media (min-width: 768px) {
@@ -334,11 +342,11 @@ body.nav-open .mobile-nav-container {
   .mobile-menu-button {
     display: none;
   }
-  
+
   .content-wrapper {
     flex-direction: row;
   }
-  
+
   .mobile-nav-container {
     display: contents;
   }
@@ -354,20 +362,26 @@ body.nav-open .mobile-nav-container {
     overflow-y: auto; /* Scrollen auf Desktop wieder aktivieren */
   }
   .nav-left::after {
-      display: none;
+    display: none;
   }
 
-  .nav-left { order: 1; }
-  #preview   { order: 2; }
-  .nav-right { order: 3; }
-  
+  .nav-left {
+    order: 1;
+  }
+  #preview {
+    order: 2;
+  }
+  .nav-right {
+    order: 3;
+  }
+
   .header {
-      min-height: auto;
-      padding: 2rem 1rem;
+    min-height: auto;
+    padding: 2rem 1rem;
   }
   footer {
-      padding: 1rem;
-      font-size: 14px;
+    padding: 1rem;
+    font-size: 14px;
   }
 }
 
@@ -448,12 +462,12 @@ footer {
 .file-list {
   list-style: none;
   padding: 0.5rem;
-  margin-top: 5px; 
+  margin-top: 5px;
   background-color: #2a2a2a;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
   position: absolute;
-  top: 100%; 
+  top: 100%;
   left: 0;
   width: 100%;
   z-index: 100;
@@ -505,23 +519,93 @@ footer {
 /* ============================================= */
 /* STYLES FÜR KONTAKTFORMULAR               */
 /* ============================================= */
-.contact-container { max-width: 600px; margin: 0 auto; text-align: left; padding: 1rem; }
-.contact-title { font-family: 'Corinthiago', cursive; text-align: center; font-size: clamp(2.5rem, 6vw, 3.5rem); margin-bottom: 0.5rem; }
-.contact-subtitle { text-align: center; margin-bottom: 1rem; color: #666; }
-.form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; color: #333; font-weight: 600; }
-.form-group input, .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; font-family: sans-serif; transition: border-color 0.3s, box-shadow 0.3s; }
-.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.2); }
-.form-group textarea { resize: vertical; min-height: 120px; }
-.submit-button { display: block; width: 100%; padding: 1rem; background: #222; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s; }
-.submit-button:hover { background: var(--accent-color); }
-.divider-or { display: flex; align-items: center; text-align: center; color: #aaa; margin: 2rem 0; }
-.divider-or::before, .divider-or::after { content: ''; flex: 1; border-bottom: 1px solid #ddd; }
-.divider-or:not(:empty)::before { margin-right: .5em; }
-.divider-or:not(:empty)::after { margin-left: .5em; }
+.contact-container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+  padding: 1rem;
+}
+.contact-title {
+  font-family: "Corinthiago", cursive;
+  text-align: center;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  margin-bottom: 0.5rem;
+}
+.contact-subtitle {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #666;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 600;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: sans-serif;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.2);
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+.submit-button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background: #222;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.submit-button:hover {
+  background: var(--accent-color);
+}
+.divider-or {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #aaa;
+  margin: 2rem 0;
+}
+.divider-or::before,
+.divider-or::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+.divider-or:not(:empty)::before {
+  margin-right: 0.5em;
+}
+.divider-or:not(:empty)::after {
+  margin-left: 0.5em;
+}
 
 /* Styling für das Telefon-Icon */
-.phone-call-container { text-align: center; margin-bottom: 2rem; }
+.phone-call-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 .phone-icon-link {
   display: inline-block;
   position: relative;
@@ -532,7 +616,9 @@ footer {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-.phone-icon-link:hover { transform: scale(1.1); }
+.phone-icon-link:hover {
+  transform: scale(1.1);
+}
 .phone-icon-svg {
   width: 30px;
   height: 30px;
@@ -546,18 +632,27 @@ footer {
 
 /* Vibrations-Animation für den Hörer */
 @keyframes vibrate {
-  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-  25% { transform: translate(-50%, -50%) rotate(-5deg); }
-  75% { transform: translate(-50%, -50%) rotate(5deg); }
+  0%,
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) rotate(-5deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(5deg);
+  }
 }
 
 /* Pulsierende Ringe */
 .phone-icon-link::before,
 .phone-icon-link::after {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border: 2px solid var(--accent-color);
   border-radius: 50%;
   animation: pulsate 1.5s infinite;
@@ -567,8 +662,14 @@ footer {
   animation-delay: 0.75s;
 }
 @keyframes pulsate {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(1.6); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }
 
 /* RESPONSIVE: Media Query, um Hamburger-Button auf Mobilgeräten anzuzeigen */
@@ -576,4 +677,84 @@ footer {
   .mobile-menu-button {
     display: flex;
   }
+}
+/* Basic styles for the project page */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #f4f4f9;
+  color: #333; /* Dark grey for better reading contrast */
+  line-height: 1.6;
+}
+
+/* The main card for the project */
+.project-card {
+  background-color: #ffffff;
+  margin: 20px auto;
+  padding: 25px;
+  max-width: 800px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Headings */
+.project-card h2 {
+  color: #000000;
+  margin-top: 0;
+}
+.project-card h3 {
+  color: #000000;
+  border-bottom: 2px solid #e1e1e1;
+  padding-bottom: 5px;
+  margin-top: 25px;
+}
+.project-card h4 {
+  color: #333; /* Slightly lighter than the main headings */
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* Text and lists */
+.project-card p,
+.project-card ul {
+  margin-bottom: 15px;
+}
+.project-card ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+.project-card ul li {
+  /* SVG icon as list bullet, color changed to black */
+  background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23000000" class="bi bi-check-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>')
+    no-repeat left center;
+  padding-left: 25px;
+  margin-bottom: 10px;
+}
+
+/* Layout for the value proposition */
+.value-proposition {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.perspective {
+  flex: 1;
+  min-width: 280px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #e1e1e1;
+}
+.perspective h4 {
+  color: #000000;
+  margin-top: 0;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 8px;
+}
+.perspective p {
+  font-size: 0.95em;
+}
+.kpi-label {
+  font-weight: bold;
+  color: #000000;
 }
