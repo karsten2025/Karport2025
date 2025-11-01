@@ -34,4 +34,6 @@ venv.bak
 # Sensible Konfigurationsdateien
 # Wichtig, um z.B. API-Schlüssel geheim zu halten.
 *.env
-config.ini
+config.ini.DS_Store
+static/.DS_Store
+templates/.DS_Store

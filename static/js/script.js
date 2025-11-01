@@ -1,37 +1,36 @@
 document.addEventListener("DOMContentLoaded", function () {
-
   // --- NEU: LOGIK FÜR HAMBURGER MENÜ ---
-  const menuToggle = document.getElementById('mobile-menu-toggle');
+  const menuToggle = document.getElementById("mobile-menu-toggle");
   if (menuToggle) {
-    menuToggle.addEventListener('click', function() {
+    menuToggle.addEventListener("click", function () {
       // Fügt die Klasse .nav-open zum <body> hinzu oder entfernt sie.
-      document.body.classList.toggle('nav-open');
+      document.body.classList.toggle("nav-open");
     });
   }
 
   // --- KORRIGIERTER TOOLTIP-ANSATZ: Ein einziger, globaler Tooltip ---
   function createGlobalTooltip() {
-    if (document.getElementById('global-tooltip')) return document.getElementById('global-tooltip');
-    
-    const tooltip = document.createElement('div');
-    tooltip.id = 'global-tooltip';
+    if (document.getElementById("global-tooltip"))
+      return document.getElementById("global-tooltip");
+
+    const tooltip = document.createElement("div");
+    tooltip.id = "global-tooltip";
     Object.assign(tooltip.style, {
-      position: 'fixed',
-      backgroundColor: '#ff7e5f',
-      color: 'white',
-      padding: '5px 10px',
-      borderRadius: '5px',
-      fontSize: '14px',
-      fontWeight: 'bold',
-      pointerEvents: 'none',
-      zIndex: '9999',
-      display: 'none'
+      position: "fixed",
+      backgroundColor: "#ff7e5f",
+      color: "white",
+      padding: "5px 10px",
+      borderRadius: "5px",
+      fontSize: "14px",
+      fontWeight: "bold",
+      pointerEvents: "none",
+      zIndex: "9999",
+      display: "none",
     });
     document.body.appendChild(tooltip);
     return tooltip;
   }
   const globalTooltip = createGlobalTooltip();
-
 
   // --- TEIL 1: SLIDESHOW ---
   const slides = document.querySelectorAll(".slide");
@@ -55,21 +54,22 @@ document.addEventListener("DOMContentLoaded", function () {
   // Ladefunktion für die LINKE Navigation
   function loadHtmlContent(sectionName) {
     // RESPONSIVE: Nach dem Klick das Menü schließen
-    document.body.classList.remove('nav-open');
+    document.body.classList.remove("nav-open");
 
-    const currentLangParam = window.location.search; 
+    const currentLangParam = window.location.search;
     const url = `/load/${sectionName}${currentLangParam}`;
 
-    previewContent.innerHTML = '<p>Lade Inhalt...</p>';
+    previewContent.innerHTML = "<p>Lade Inhalt...</p>";
     fetch(url)
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(`HTTP error! status: ${response.status}`);
         return response.text();
       })
-      .then(html => { 
-        previewContent.innerHTML = html; 
+      .then((html) => {
+        previewContent.innerHTML = html;
       })
-      .catch(e => {
+      .catch((e) => {
         console.error("Fehler beim Laden des HTML-Inhalts:", e);
         previewContent.innerHTML = `<p style="color: red;">Fehler: Der Inhalt konnte nicht geladen werden.</p>`;
       });
@@ -78,8 +78,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- LINKE NAVIGATION ---
   if (navLeft) {
     navLeft.addEventListener("click", function (event) {
-      const button = event.target.closest('button[data-section]');
-      if (button) { loadHtmlContent(button.dataset.section); }
+      const button = event.target.closest("button[data-section]");
+      if (button) {
+        loadHtmlContent(button.dataset.section);
+      }
     });
     // RESPONSIVE: Tooltip für die linke Navigation wurde entfernt
   }
@@ -89,45 +91,50 @@ document.addEventListener("DOMContentLoaded", function () {
     let fetchTimeout;
 
     // EINZIGER 'mouseover' LISTENER FÜR DIE RECHTE NAVIGATION
-    navRight.addEventListener('mouseover', function(event) {
-      const link = event.target.closest('.file-list-item a');
-      if (link && link.href.includes('/static/certificates')) {
+    navRight.addEventListener("mouseover", function (event) {
+      const link = event.target.closest(".file-list-item a");
+      if (link && link.href.includes("/static/certificates")) {
         const filePath = link.href;
-        const fileExtension = filePath.split('.').pop().toLowerCase();
-        if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+        const fileExtension = filePath.split(".").pop().toLowerCase();
+        if (["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
           previewContent.innerHTML = `<img src="${filePath}" style="max-width: 100%; height: auto; border-radius: 8px;">`;
-        } else if (fileExtension === 'pdf') {
+        } else if (fileExtension === "pdf") {
           previewContent.innerHTML = `<iframe src="${filePath}" style="width: 100%; height: 60vh; border: none;"></iframe>`;
         }
-        
+
         // RESPONSIVE: Tooltip-Text geändert
-        globalTooltip.textContent = 'double touch'; 
-        globalTooltip.style.display = 'block';
+        globalTooltip.textContent = "double touch";
+        globalTooltip.style.display = "block";
         return;
       }
-      
-      const container = event.target.closest('.accordion-container');
+
+      const container = event.target.closest(".accordion-container");
       if (container) {
-        const fileList = container.querySelector('.file-list');
+        const fileList = container.querySelector(".file-list");
         if (fileList.children.length > 0) return;
-        
+
         const category = container.dataset.category;
         const currentLangParam = window.location.search;
         clearTimeout(fetchTimeout);
         fetchTimeout = setTimeout(() => {
           fetch(`/certificates/${category}${currentLangParam}`)
-            .then(response => response.json())
-            .then(files => {
-              fileList.innerHTML = '';
+            .then((response) => response.json())
+            .then((files) => {
+              fileList.innerHTML = "";
               if (files.length === 0) {
-                fileList.innerHTML = '<li class="file-list-item"><a>Keine Einträge</a></li>';
+                fileList.innerHTML =
+                  '<li class="file-list-item"><a>Keine Einträge</a></li>';
               } else {
-                files.forEach(file => {
-                  const listItem = document.createElement('li');
-                  listItem.className = 'file-list-item';
-                  const fileLink = document.createElement('a');
+                files.forEach((file) => {
+                  const listItem = document.createElement("li");
+                  listItem.className = "file-list-item";
+                  const fileLink = document.createElement("a");
                   fileLink.href = `/static/certificates/${category}/${file}`;
-                  fileLink.textContent = file.split('.').slice(0, -1).join('.').replace(/_/g, ' ');
+                  fileLink.textContent = file
+                    .split(".")
+                    .slice(0, -1)
+                    .join(".")
+                    .replace(/_/g, " ");
                   fileLink.target = "_blank";
                   listItem.appendChild(fileLink);
                   fileList.appendChild(listItem);
@@ -139,25 +146,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // EINZIGER 'mouseout' LISTENER
-    navRight.addEventListener('mouseout', function(event) {
-      const link = event.target.closest('.file-list-item a');
+    navRight.addEventListener("mouseout", function (event) {
+      const link = event.target.closest(".file-list-item a");
       if (link) {
-        globalTooltip.style.display = 'none';
+        globalTooltip.style.display = "none";
       }
-      
+
       if (!navRight.contains(event.relatedTarget)) {
         previewContent.innerHTML = initialContent;
-        globalTooltip.style.display = 'none';
+        globalTooltip.style.display = "none";
       }
     });
   }
-  
-  // EIN globaler Listener für die Mausbewegung
-  document.addEventListener('mousemove', function(event) {
-      if (globalTooltip.style.display === 'block') {
-        globalTooltip.style.left = `${event.clientX + 15}px`;
-        globalTooltip.style.top = `${event.clientY}px`;
-      }
-  });
 
+  // EIN globaler Listener für die Mausbewegung
+  document.addEventListener("mousemove", function (event) {
+    if (globalTooltip.style.display === "block") {
+      globalTooltip.style.left = `${event.clientX + 15}px`;
+      globalTooltip.style.top = `${event.clientY}px`;
+    }
+  });
 });

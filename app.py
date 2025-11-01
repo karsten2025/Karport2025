@@ -1,5 +1,7 @@
 import os
-from flask import Flask, render_template, request, g, jsonify
+from flask import Flask, render_template, request, g, jsonify, request, redirect
+CLIENT_PORTAL = "https://client-portal-4wir.onrender.com"
+
 
 app = Flask(__name__)
 
@@ -40,6 +42,27 @@ def list_certificates(category):
     except Exception as e:
         print(f"Error listing certificates: {e}")
     return jsonify([])
+
+@app.route("/explore")
+def go_explore():
+    lang = request.args.get("lang", "de")
+    return redirect(f"{CLIENT_PORTAL}/explore?lang={lang}", code=302)
+
+@app.route("/brief")
+def go_brief():
+    lang = request.args.get("lang", "de")
+    return redirect(f"{CLIENT_PORTAL}/brief?lang={lang}", code=302)
+
+@app.route("/offer")
+def go_offer():
+    lang = request.args.get("lang", "de")
+    return redirect(f"{CLIENT_PORTAL}/offer?lang={lang}", code=302)
+
+@app.route("/portal")
+def go_portal():
+    # Portal-Seite (nach Magic-Link-Login)
+    return redirect(f"{CLIENT_PORTAL}/portal", code=302)
+
 
 # --- Dieser Block bleibt unverändert ---
 if __name__ == '__main__':
