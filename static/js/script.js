@@ -167,3 +167,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// ---- CTA unter dem Profilbild automatisch ein-/ausblenden ---------------
+(function () {
+  const preview = document.getElementById("preview-content");
+  const cta = document.getElementById("ctaUnderProfile");
+  if (!preview || !cta) return;
+
+  function profileVisible() {
+    // Profile-Startzustand: figure.profile-figure existiert (und ist sichtbar)
+    return !!preview.querySelector(".profile-figure");
+  }
+
+  function updateCTA() {
+    // CTA nur zeigen, wenn NUR das Profilbild im Preview steht
+    // (sprich: sobald Content via Navigation/Akkordeon geladen wird -> ausblenden)
+    const show = profileVisible();
+    cta.classList.toggle("is-hidden", !show);
+  }
+
+  // 1) Beim ersten Laden
+  updateCTA();
+
+  // 2) Auf DOM-Wechsel im Preview reagieren (Navigation lädt andere Inhalte hinein)
+  const mo = new MutationObserver(updateCTA);
+  mo.observe(preview, { childList: true, subtree: true });
+
+  // 3) Sicherstellen, dass ein Klick links/rechts (der Content lädt) das Update triggert
+  const navLeft = document.querySelector(".nav-left");
+  const navRight = document.querySelector(".nav-right");
+  [navLeft, navRight].forEach((el) => {
+    if (!el) return;
+    el.addEventListener("click", () => setTimeout(updateCTA, 50));
+  });
+})();

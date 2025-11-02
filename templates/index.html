@@ -44,22 +44,6 @@
   <body>
     <!-- 1. HEADER -->
     <header class="header" aria-label="Seitenkopf">
-      <!-- Start-Button: "Jetzt Anliegen skizzieren" -->
-      <!-- Start-Button: "Jetzt Anliegen skizzieren" -->
-      <div class="ignition-wrapper">
-        <a
-          id="ignitionBtn"
-          class="ignition-btn"
-          href="/explore?lang={{ lang|default('de') }}"
-          aria-label="{% if lang == 'de' %}Jetzt Anliegen skizzieren{% else %}Sketch your brief{% endif %}"
-        >
-          <span class="ignition-text">
-            {% if lang == 'de' %}Jetzt&nbsp;Anliegen<br />skizzieren{% else
-            %}Sketch&nbsp;your<br />brief{% endif %}
-          </span>
-        </a>
-      </div>
-
       <!-- NEU: Hamburger Menü-Button, nur auf Mobile sichtbar -->
       <button
         id="mobile-menu-toggle"
@@ -134,6 +118,7 @@
       </div>
 
       <!-- 2b. VORSCHAU (bleibt außerhalb) -->
+      <!-- 2b. VORSCHAU (bleibt außerhalb) -->
       <main id="preview" aria-label="Vorschaufenster – Inhalt zur Auswahl">
         <div id="preview-content">
           <figure class="profile-figure">
@@ -143,6 +128,19 @@
               class="profile-image"
             />
           </figure>
+
+          <!-- CTA unter dem Profilbild -->
+          <div
+            id="ctaUnderProfile"
+            class="cta-under-profile is-hidden"
+            role="region"
+            aria-label="Schnelleinstieg Client-Portal"
+          >
+            <a class="cta-btn" href="/explore">
+              {% if lang == 'de' %}Jetzt Anliegen skizzieren{% else %}Sketch
+              your request{% endif %}
+            </a>
+          </div>
         </div>
       </main>
     </div>
