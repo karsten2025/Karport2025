@@ -423,6 +423,20 @@ footer {
   font-size: 12px;
   flex-shrink: 0;
 }
+/* Footer-Links: weiß statt lila */
+footer a {
+  color: #ffffff;
+  text-decoration: underline; /* wenn du die Unterstreichung behalten willst */
+}
+
+footer a:visited {
+  color: #ffffff;
+}
+
+footer a:hover,
+footer a:focus {
+  color: #facc15; /* optional: leichte Highlight-Farbe bei Hover, z.B. Gelb */
+}
 
 /* ===== Header für rechte Navigation (nur Desktop) ===== */
 .nav-header {

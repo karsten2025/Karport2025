@@ -5,7 +5,6 @@ from flask import (
     request,
     g,
     jsonify,
-    request,
     redirect,
     make_response,
 )
@@ -33,7 +32,6 @@ def index():
     return render_template("index.html")
 
 
-# --- Dieser Block bleibt unverändert ---
 @app.route("/load/<section>")
 def load_section(section):
     try:
@@ -44,15 +42,12 @@ def load_section(section):
         return "Inhalt nicht gefunden.", 404
 
 
-# --- ÜBERARBEITETE FUNKTION: Liste der statischen Dateien holen ---
-# HINWEIS: Diese Funktion holt jetzt wieder ALLE Dateien.
 @app.route("/certificates/<category>")
 def list_certificates(category):
     try:
         dir_path = os.path.join(app.static_folder, "certificates", category)
         if os.path.isdir(dir_path):
             all_files = sorted(os.listdir(dir_path), reverse=True)
-            # KORREKTUR: Das Limit wurde entfernt.
             return jsonify(all_files)
     except Exception as e:
         print(f"Error listing certificates: {e}")
@@ -79,16 +74,23 @@ def go_offer():
 
 @app.route("/portal")
 def go_portal():
-    # Portal-Seite (nach Magic-Link-Login)
     return redirect(f"{CLIENT_PORTAL}/portal", code=302)
+
+
+# 👉 NEU: Impressum & Datenschutz
+@app.route("/impressum")
+def impressum():
+    return render_template("partials/impressum.de.html")
+
+
+@app.route("/datenschutz")
+def datenschutz():
+    return render_template("partials/datenschutz.de.html")
 
 
 @app.route("/sitemap.xml")
 def sitemap():
     """Erzeugt die sitemap.xml."""
-
-    # Der Inhalt Ihrer sitemap.xml als Text
-    # WICHTIG: Ändern Sie das <lastmod>-Datum und fügen Sie Ihre Unterseiten hinzu
     sitemap_xml_content = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -97,16 +99,12 @@ def sitemap():
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  </urlset>"""
+</urlset>"""
 
-    # Erstellt eine Antwort (Response) und setzt den "Content-Type" auf XML
     response = make_response(sitemap_xml_content)
     response.headers["Content-Type"] = "application/xml"
-
     return response
 
 
-# --- Dieser Block bleibt unverändert ---
 if __name__ == "__main__":
     app.run(debug=True)
