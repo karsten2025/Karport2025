@@ -841,7 +841,7 @@ body {
 
 /* Glassmorphism-Theme */
 .news-ticker--glass {
-  background: rgba(255, 255, 255, 0.82);
+  background: #b0bdc7;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18),
     inset 0 0 0 1px rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(14px);
@@ -874,12 +874,12 @@ body {
 .news-ticker__item {
   font-size: var(--ticker-font-size);
   font-weight: 400;
-  color: #ff7e5f;
+  color: #eb6619;
 }
 
 /* Optional: leichte Farbe, wenn Hintergrund mal dunkler wird */
 .news-ticker--glass .news-ticker__item {
-  color: #ff7e5f;
+  color: #eb6619;
 }
 
 /* -------------------------------------------------
