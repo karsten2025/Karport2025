@@ -817,3 +817,79 @@ body {
     padding: 9px 16px;
   }
 }
+/* -------------------------------------------------
+   NEWS-TICKER – Basis-Variablen
+   ------------------------------------------------- */
+:root {
+  --ticker-font-size: 18px;
+  --ticker-speed: 26s; /* Default-Geschwindigkeit, falls kein Inline-Style */
+  --ticker-gap: 3rem; /* Abstand zwischen Text 1 und 2 */
+}
+
+/* -------------------------------------------------
+   Pille / Container
+   ------------------------------------------------- */
+.news-ticker {
+  position: relative;
+  max-width: 840px;
+  margin: 2.4rem auto 0;
+  padding: 0.7rem 2.6rem;
+  border-radius: 9999px;
+  font-size: var(--ticker-font-size);
+  line-height: 1.3;
+}
+
+/* Glassmorphism-Theme */
+.news-ticker--glass {
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* -------------------------------------------------
+   Viewport & Track
+   ------------------------------------------------- */
+.news-ticker__viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* WICHTIG: Text bleibt in der Pille */
+}
+
+.news-ticker__track {
+  display: inline-flex;
+  align-items: center; /* Text vertikal mittig */
+  gap: var(--ticker-gap);
+  white-space: nowrap;
+
+  /* Animation – Dauer kommt aus CSS-Variable oder Inline-Style */
+  animation-name: ticker-move;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: var(--ticker-speed, 26s);
+}
+
+/* Einzelne Textelemente */
+.news-ticker__item {
+  font-size: var(--ticker-font-size);
+  font-weight: 400;
+  color: #ff7e5f;
+}
+
+/* Optional: leichte Farbe, wenn Hintergrund mal dunkler wird */
+.news-ticker--glass .news-ticker__item {
+  color: #ff7e5f;
+}
+
+/* -------------------------------------------------
+   Keyframes – Distanz kommt aus JS über --ticker-distance
+   ------------------------------------------------- */
+@keyframes ticker-move {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-1 * var(--ticker-distance, 100%)));
+  }
+}

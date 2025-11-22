@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="{{ 'en' if lang == 'en' else 'de' }}">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Impressum – Karsten Zenk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Optional: gleicher Header wie auf der Startseite -->
+    <header class="header" aria-label="Seitenkopf">
+      <div class="language-switch">
+        <a
+          href="?lang=de"
+          class="lang-button"
+          title="Deutsch"
+          aria-label="Deutsch"
+          >🇩🇪</a
+        >
+        <a
+          href="?lang=en"
+          class="lang-button"
+          title="English"
+          aria-label="English"
+          >🇬🇧</a
+        >
+      </div>
+      <div class="header-text">
+        {% if lang == 'de' %} {% include 'partials/header.de.html' %} {% else %}
+        {% include 'partials/header.en.html' %} {% endif %}
+      </div>
+    </header>
+
+    <main class="legal-main">
+      {% if lang == 'de' %} {% include 'partials/impressum.de.html' %} {% else
+      %} {% include 'partials/impressum.en.html' %} {% endif %}
+    </main>
+
+    <footer>
+      <p>© 2025 Karsten Lenk – All rights reserved.</p>
+      <p>
+        <a href="/">Home</a> ·
+        <a href="/datenschutz">Datenschutz</a>
+      </p>
+    </footer>
+  </body>
+</html>

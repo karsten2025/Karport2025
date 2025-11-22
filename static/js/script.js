@@ -200,4 +200,49 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!el) return;
     el.addEventListener("click", () => setTimeout(updateCTA, 50));
   });
+  // -----------------------------------------------------
+  // NEWS-TICKER: Distanz & Dauer dynamisch setzen
+  // -----------------------------------------------------
+  function initNewsTicker() {
+    const ticker = document.querySelector(".news-ticker");
+    if (!ticker) return;
+
+    const viewport = ticker.querySelector(".news-ticker__viewport");
+    const track = ticker.querySelector(".news-ticker__track");
+    if (!viewport || !track) return;
+
+    const firstItem = track.querySelector(".news-ticker__item");
+    if (!firstItem) return;
+
+    // Breiten messen
+    const firstWidth = firstItem.getBoundingClientRect().width;
+    const viewportWidth = viewport.getBoundingClientRect().width;
+
+    // gap aus CSS-Variable lesen (Fallback: 48px)
+    const styles = getComputedStyle(track);
+    const gapValue =
+      styles.getPropertyValue("gap") || styles.getPropertyValue("column-gap");
+    const gap = parseFloat(gapValue) || 48;
+
+    // Distanz = Textbreite + Gap
+    // -> Wenn der erste Text komplett raus ist, sitzt der zweite an seiner Stelle.
+    const distance = firstWidth + gap;
+
+    track.style.setProperty("--ticker-distance", distance + "px");
+
+    // Optional: Dauer zusätzlich an Distanz koppeln (lesbare Geschwindigkeit)
+    // Wenn du NUR die CSS-Variable --ticker-speed nutzen willst,
+    // kommentiere die nächsten 3 Zeilen einfach aus.
+    const pxPerSecond = 80; // je größer, desto schneller
+    const duration = distance / pxPerSecond;
+    track.style.animationDuration = duration + "s";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initNewsTicker();
+    window.addEventListener("resize", () => {
+      // bei Resize neu berechnen
+      initNewsTicker();
+    });
+  });
 })();

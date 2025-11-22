@@ -47,7 +47,7 @@
   <body>
     <!-- 1. HEADER -->
     <header class="header" aria-label="Seitenkopf">
-      <!-- NEU: Hamburger Menü-Button, nur auf Mobile sichtbar -->
+      <!-- Mobile Menü-Button -->
       <button
         id="mobile-menu-toggle"
         class="mobile-menu-button"
@@ -56,7 +56,7 @@
         <div class="hamburger-icon"></div>
       </button>
 
-      <!-- Sprachumschalter (unverändert) -->
+      <!-- Sprachumschalter -->
       <div class="language-switch">
         <a
           href="?lang=de"
@@ -74,32 +74,35 @@
         >
       </div>
 
-      <!-- Slideshow-Bilder (unverändert) -->
+      <!-- Slideshow-Bilder -->
       <div class="slideshow">
         <img
           src="{{ url_for('static', filename='images/header1.jpg') }}"
           class="slide active"
+          alt=""
         />
         <img
           src="{{ url_for('static', filename='images/header2.jpg') }}"
           class="slide"
+          alt=""
         />
         <img
           src="{{ url_for('static', filename='images/header3.jpg') }}"
           class="slide"
+          alt=""
         />
       </div>
 
-      <!-- Text über dem Bild (unverändert) -->
+      <!-- Headline-Text -->
       <div class="header-text">
         {% if lang == 'de' %} {% include 'partials/header.de.html' %} {% else %}
         {% include 'partials/header.en.html' %} {% endif %}
       </div>
     </header>
 
-    <!-- KORREKTUR: Wrapper für linken, mittleren und rechten Bereich -->
+    <!-- 2. CONTENT-WRAPPER -->
     <div class="content-wrapper">
-      <!-- NEU: Container, der die Navigation auf Mobile umschließt -->
+      <!-- Navigation (links + rechts) -->
       <div id="mobile-nav-container" class="mobile-nav-container">
         <!-- 2a. NAV-LEFT -->
         <nav
@@ -120,7 +123,7 @@
         </nav>
       </div>
 
-      <!-- 2b. VORSCHAU (bleibt außerhalb) -->
+      <!-- 2b. VORSCHAU-MITTE -->
       <!-- 2b. VORSCHAU (bleibt außerhalb) -->
       <main id="preview" aria-label="Vorschaufenster – Inhalt zur Auswahl">
         <div id="preview-content">
@@ -135,25 +138,46 @@
           <!-- CTA unter dem Profilbild -->
           <div
             id="ctaUnderProfile"
-            class="cta-under-profile is-hidden"
+            class="cta-under-profile"
             role="region"
             aria-label="Schnelleinstieg Client-Portal"
           >
             <a class="cta-btn" href="/explore">
-              {% if lang == 'de' %}Jetzt Anliegen skizzieren{% else %}Sketch
-              your request{% endif %}
+              {% if lang == 'de' %} Jetzt Anliegen skizzieren {% else %} Sketch
+              your request {% endif %}
             </a>
           </div>
-        </div>
+
+          <!-- === NEWS-TICKER (Glassmorphism) ========================== -->
+          <div
+  class="news-ticker news-ticker--glass"
+  style="
+    --ticker-font-size: 18px;
+    --ticker-speed: 30s;
+    --ticker-gap: 2.5rem;
+  "
+>
+  <div class="news-ticker__viewport">
+    <div class="news-ticker__track">
+      <span class="news-ticker__item">
+        {% include 'partials/ticker.' ~ lang ~ '.html' %}
+      </span>
+      <span class="news-ticker__item">
+        {% include 'partials/ticker.' ~ lang ~ '.html' %}
+      </span>
+    </div>
+  </div>
+</div>
+
       </main>
     </div>
 
-    <!-- 3. FOOTER (unverändert) -->
+    <!-- 3. FOOTER -->
     <footer>
       <p>© 2025 Karsten Zenk – All rights reserved.</p>
       <p>
-        <a href="/impressum">Impressum</a> ·
-        <a href="/datenschutz">Datenschutz</a>
+        <a href="{{ url_for('impressum') }}">Impressum</a> ·
+        <a href="{{ url_for('datenschutz') }}">Datenschutz</a>
       </p>
     </footer>
 
