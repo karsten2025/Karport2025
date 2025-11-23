@@ -20,12 +20,8 @@ html {
   --ticker-gap: 3rem; /* Abstand zwischen Text 1 und 2 */
 
   /* BALLOON-Parameter (kannst du bei Bedarf tweaken) */
-  --balloon-start-size: 100px;
-  --balloon-end-scale: 1.3;
-  --balloon-start-scale: 0.45; /* Startgröße unten */
-  --balloon-mid-scale: 0.8; /* Zwischen-Größe (z.B. in der Mitte) */
-  --balloon-end-scale: 1.15; /* Endgröße oben */
-  --balloon-rise-duration: 16s; /* Steiggeschwindigkeit */
+  --balloon-start-size: 40px;
+  --balloon-end-scale: 3.5;
 }
 
 * {
