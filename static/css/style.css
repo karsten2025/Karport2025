@@ -13,8 +13,20 @@ html {
   --accent-color: #ff7e5f; /* Ihre Akzentfarbe (für Hover & Icons) */
   --divider-color: var(--accent-color);
   --divider-thickness: 2px;
+
+  /* NEWS-TICKER Standardwerte */
+  --ticker-font-size: 18px;
+  --ticker-speed: 26s; /* Default-Geschwindigkeit, falls kein Inline-Style */
+  --ticker-gap: 3rem; /* Abstand zwischen Text 1 und 2 */
+
+  /* BALLOON-Parameter (kannst du bei Bedarf tweaken) */
+  --balloon-start-size: 100px;
+  --balloon-end-scale: 1.3;
+  --balloon-start-scale: 0.45; /* Startgröße unten */
+  --balloon-mid-scale: 0.8; /* Zwischen-Größe (z.B. in der Mitte) */
+  --balloon-end-scale: 1.15; /* Endgröße oben */
+  --balloon-rise-duration: 16s; /* Steiggeschwindigkeit */
 }
-/* ============================================= */
 
 * {
   box-sizing: border-box;
@@ -162,7 +174,7 @@ body.nav-open {
   transition: all 0.3s ease;
 }
 .hamburger-icon::before,
-.hamburger-icon::after {
+.hhamburger-icon::after {
   content: "";
   position: absolute;
   width: 24px;
@@ -692,6 +704,7 @@ footer a:focus {
     display: flex;
   }
 }
+
 /* Basic styles for the project page */
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -817,14 +830,10 @@ body {
     padding: 9px 16px;
   }
 }
+
 /* -------------------------------------------------
-   NEWS-TICKER – Basis-Variablen
+   NEWS-TICKER – Basis-Variablen (werden oben gesetzt)
    ------------------------------------------------- */
-:root {
-  --ticker-font-size: 18px;
-  --ticker-speed: 26s; /* Default-Geschwindigkeit, falls kein Inline-Style */
-  --ticker-gap: 3rem; /* Abstand zwischen Text 1 und 2 */
-}
 
 /* -------------------------------------------------
    Pille / Container
@@ -892,4 +901,165 @@ body {
   to {
     transform: translateX(calc(-1 * var(--ticker-distance, 100%)));
   }
+}
+
+/* ========================================================= */
+/* BALLOON – sichtbarer, anklickbarer Aufstieg von unten     */
+/* ========================================================= */
+
+#balloon-layer {
+  position: fixed;
+  inset: 0; /* über die ganze Viewport-Fläche */
+  pointer-events: none; /* Layer blockiert nichts */
+  z-index: 2000; /* über Inhalt, unter Tooltip/Modals */
+}
+
+/* Der Button selbst – klickbar, animiert */
+.balloon {
+  position: absolute;
+  left: 50%;
+  bottom: -120px; /* startet knapp unter dem sichtbaren Bereich */
+  transform: translateX(-50%);
+  width: var(--balloon-start-size);
+  height: var(--balloon-start-size);
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto; /* macht den Ballon trotzdem klickbar */
+  animation: balloon-rise var(--balloon-rise-duration, 18s) linear forwards;
+}
+
+/* Ballon-Körper */
+.balloon__inner {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at 30% 20%,
+    #ffe9d6 0,
+    #fb923c 30%,
+    #ea580c 100%
+  );
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* kleine Klick-Hand als Anreiz */
+.balloon__inner::after {
+  content: "👆";
+  position: absolute;
+  bottom: 18%;
+  right: 18%;
+  font-size: 0.9rem;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
+}
+
+/* Schnur */
+.balloon__string {
+  position: absolute;
+  width: 2px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.25);
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+}
+
+/* Aufstiegs-Animation: von unten klein nach oben größer */
+@keyframes balloon-rise {
+  0% {
+    transform: translate(-50%, 20vh) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -110vh) scale(var(--balloon-end-scale));
+    opacity: 0.9;
+  }
+}
+
+/* Wird nach dem Platzen/einmaliger Nutzung ausgeblendet */
+.balloon--hidden {
+  display: none;
+}
+
+/* Pop-Effekt */
+.balloon--popped .balloon__inner {
+  animation: balloon-pop 0.35s ease-out forwards;
+}
+
+@keyframes balloon-pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+/* Overlay-Dialog beim Klick */
+.balloon-message {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 2100;
+}
+
+.balloon-message.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.balloon-message__content {
+  max-width: 420px;
+  width: 90%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.balloon-message__content h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.balloon-message__content p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.balloon-message__close {
+  display: inline-block;
+  border: none;
+  border-radius: 999px;
+  background: #111827;
+  color: #ffffff;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.balloon-message__close:hover {
+  background: #4b5563;
 }

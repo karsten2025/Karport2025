@@ -124,7 +124,6 @@
       </div>
 
       <!-- 2b. VORSCHAU-MITTE -->
-      <!-- 2b. VORSCHAU (bleibt außerhalb) -->
       <main id="preview" aria-label="Vorschaufenster – Inhalt zur Auswahl">
         <div id="preview-content">
           <figure class="profile-figure">
@@ -148,27 +147,27 @@
             </a>
           </div>
 
-          <!-- === NEWS-TICKER (Glassmorphism) ========================== -->
+          <!-- === NEWS-TICKER =================================== -->
           <div
-  class="news-ticker news-ticker--glass"
-  style="
-    --ticker-font-size: 18px;
-    --ticker-speed: 30s;
-    --ticker-gap: 2.5rem;
-  "
->
-  <div class="news-ticker__viewport">
-    <div class="news-ticker__track">
-      <span class="news-ticker__item">
-        {% include 'partials/ticker.' ~ lang ~ '.html' %}
-      </span>
-      <span class="news-ticker__item">
-        {% include 'partials/ticker.' ~ lang ~ '.html' %}
-      </span>
-    </div>
-  </div>
-</div>
-
+            class="news-ticker news-ticker--glass"
+            style="
+              --ticker-font-size: 18px;
+              --ticker-speed: 30s;
+              --ticker-gap: 2.5rem;
+            "
+          >
+            <div class="news-ticker__viewport">
+              <div class="news-ticker__track">
+                <span class="news-ticker__item">
+                  {% include 'partials/ticker.' ~ lang ~ '.html' %}
+                </span>
+                <span class="news-ticker__item">
+                  {% include 'partials/ticker.' ~ lang ~ '.html' %}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
 
@@ -180,6 +179,45 @@
         <a href="{{ url_for('datenschutz') }}">Datenschutz</a>
       </p>
     </footer>
+
+    <!-- === BALLOON-LAYER =================================== -->
+    <div id="balloon-layer" aria-hidden="true">
+      <button id="magic-balloon" class="balloon" type="button">
+        <span class="balloon__inner"></span>
+        <span class="balloon__string"></span>
+      </button>
+
+      <!-- Dialog, der beim Klick auf den Ballon erscheint -->
+      <div
+        id="balloon-pop-message"
+        class="balloon-message"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden="true"
+      >
+        <div class="balloon-message__content">
+          {% if lang == 'de' %}
+          <h2>CPMAI in der Praxis</h2>
+          <p>
+            Wenn wir KI- oder Automationsprojekte mit CPMAI strukturieren,
+            landen weniger Ideen auf dem Proof-of-Concept-Friedhof – und mehr
+            Lösungen erzeugen echte Wertschöpfung im Betrieb.
+          </p>
+          <button type="button" class="balloon-message__close">
+            Schließen
+          </button>
+          {% else %}
+          <h2>CPMAI in Practice</h2>
+          <p>
+            When we structure AI and automation projects with CPMAI, fewer ideas
+            end up on the proof-of-concept graveyard – and more solutions go
+            live and create real business value.
+          </p>
+          <button type="button" class="balloon-message__close">Close</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
 
     <!-- 4. JAVASCRIPT -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

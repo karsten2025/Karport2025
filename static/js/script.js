@@ -166,6 +166,87 @@ document.addEventListener("DOMContentLoaded", function () {
       globalTooltip.style.top = `${event.clientY}px`;
     }
   });
+
+  // -----------------------------------------------------
+  // BALLOON-LOGIK: einmaliger Aufstieg + Klick-Dialog
+  // -----------------------------------------------------
+  (function initBalloon() {
+    const balloonLayer = document.getElementById("balloon-layer");
+    const balloon = document.getElementById("magic-balloon");
+    const message = document.getElementById("balloon-pop-message");
+    const closeBtn = message
+      ? message.querySelector(".balloon-message__close")
+      : null;
+
+    if (!balloonLayer || !balloon || !message || !closeBtn) return;
+
+    // Optional: Steiggeschwindigkeit in Sekunden zentral einstellen
+    const BALLOON_RISE_SECONDS = 18; // anpassbar
+    balloon.style.setProperty(
+      "--balloon-rise-duration",
+      BALLOON_RISE_SECONDS + "s"
+    );
+
+    let clicked = false;
+    let popped = false;
+
+    function showMessage() {
+      message.classList.add("is-visible");
+      message.setAttribute("aria-hidden", "false");
+    }
+
+    function hideMessage() {
+      message.classList.remove("is-visible");
+      message.setAttribute("aria-hidden", "true");
+    }
+
+    function hideBalloon() {
+      balloon.classList.add("balloon--hidden");
+    }
+
+    function popBalloon(withMessage) {
+      if (popped) return;
+      popped = true;
+      // kleine Pop-Animation (CSS) abspielen
+      balloon.classList.add("balloon--popped");
+
+      if (withMessage) {
+        showMessage();
+      } else {
+        // nach der Pop-Animation vollständig ausblenden
+        setTimeout(hideBalloon, 350);
+      }
+    }
+
+    // Klick während des Aufstiegs -> Nachricht anzeigen
+    balloon.addEventListener("click", function (ev) {
+      ev.stopPropagation();
+      clicked = true;
+      popBalloon(true);
+    });
+
+    // Wenn der Aufstieg zu Ende ist und kein Klick erfolgt ist -> leises Platzen
+    balloon.addEventListener("animationend", function () {
+      if (!clicked) {
+        popBalloon(false);
+      }
+    });
+
+    // Dialog schließen
+    closeBtn.addEventListener("click", function () {
+      hideMessage();
+      // Ballon nach Klick dauerhaft weg
+      hideBalloon();
+    });
+
+    // Optional: Klick daneben schließt den Dialog ebenfalls
+    message.addEventListener("click", function (ev) {
+      if (ev.target === message) {
+        hideMessage();
+        hideBalloon();
+      }
+    });
+  })();
 });
 
 // ---- CTA unter dem Profilbild automatisch ein-/ausblenden ---------------
@@ -200,6 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!el) return;
     el.addEventListener("click", () => setTimeout(updateCTA, 50));
   });
+
   // -----------------------------------------------------
   // NEWS-TICKER: Distanz & Dauer dynamisch setzen
   // -----------------------------------------------------
@@ -231,8 +313,6 @@ document.addEventListener("DOMContentLoaded", function () {
     track.style.setProperty("--ticker-distance", distance + "px");
 
     // Optional: Dauer zusätzlich an Distanz koppeln (lesbare Geschwindigkeit)
-    // Wenn du NUR die CSS-Variable --ticker-speed nutzen willst,
-    // kommentiere die nächsten 3 Zeilen einfach aus.
     const pxPerSecond = 80; // je größer, desto schneller
     const duration = distance / pxPerSecond;
     track.style.animationDuration = duration + "s";
