@@ -952,6 +952,15 @@ body {
     #1e3a8a 100%
   );
 }
+/* Neutrales graues Theme (rechter Ballon) */
+.balloon--theme-gray .balloon__inner {
+  background: radial-gradient(
+    circle at 30% 20%,
+    #f5f5f5 0,
+    #d4d4d4 40%,
+    #737373 100%
+  );
+}
 
 /* kleines Hand-Icon als Klick-Hinweis */
 .balloon__inner::after {
