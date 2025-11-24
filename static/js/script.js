@@ -1,17 +1,19 @@
+// ---------------------------------------------------------
+// HAUPTBLOCK: wird nach DOMContentLoaded ausgeführt
+// ---------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
-  // --- NEU: LOGIK FÜR HAMBURGER MENÜ ---
+  // --- HAMBURGER MENÜ ---
   const menuToggle = document.getElementById("mobile-menu-toggle");
   if (menuToggle) {
     menuToggle.addEventListener("click", function () {
-      // Fügt die Klasse .nav-open zum <body> hinzu oder entfernt sie.
       document.body.classList.toggle("nav-open");
     });
   }
 
-  // --- KORRIGIERTER TOOLTIP-ANSATZ: Ein einziger, globaler Tooltip ---
+  // --- GLOBALER TOOLTIP ---
   function createGlobalTooltip() {
-    if (document.getElementById("global-tooltip"))
-      return document.getElementById("global-tooltip");
+    const existing = document.getElementById("global-tooltip");
+    if (existing) return existing;
 
     const tooltip = document.createElement("div");
     tooltip.id = "global-tooltip";
@@ -32,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   const globalTooltip = createGlobalTooltip();
 
-  // --- TEIL 1: SLIDESHOW ---
+  // --- SLIDESHOW ---
   const slides = document.querySelectorAll(".slide");
   let currentSlide = 0;
   function showNextSlide() {
@@ -45,37 +47,57 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(showNextSlide, 3000);
   }
 
-  // --- TEIL 2: ALLGEMEINE VARIABLEN UND FUNKTIONEN ---
+  // --- PREVIEW / NAVIGATION ---
   const previewContent = document.getElementById("preview-content");
   const navLeft = document.querySelector(".nav-left");
   const navRight = document.querySelector(".nav-right");
-  const initialContent = previewContent.innerHTML;
+  const initialContent = previewContent ? previewContent.innerHTML : "";
 
-  // Ladefunktion für die LINKE Navigation
+  // Aktuelle Sprache bestimmen (aus data-lang oder ?lang=de|en)
+  function getCurrentLang() {
+    const bodyAttr = document.body.getAttribute("data-lang");
+    if (bodyAttr === "de" || bodyAttr === "en") return bodyAttr;
+
+    const params = new URLSearchParams(window.location.search);
+    const fromParam = params.get("lang");
+    if (fromParam === "de" || fromParam === "en") return fromParam;
+
+    return "de";
+  }
+  const CURRENT_LANG = getCurrentLang();
+
+  // Inhalte aus Flask-Partials nachladen
   function loadHtmlContent(sectionName) {
-    // RESPONSIVE: Nach dem Klick das Menü schließen
     document.body.classList.remove("nav-open");
-
     const currentLangParam = window.location.search;
-    const url = `/load/${sectionName}${currentLangParam}`;
+    const url = "/load/" + sectionName + currentLangParam;
 
-    previewContent.innerHTML = "<p>Lade Inhalt...</p>";
+    if (previewContent) {
+      previewContent.innerHTML = "<p>Lade Inhalt...</p>";
+    }
+
     fetch(url)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`HTTP error! status: ${response.status}`);
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error("HTTP error! status: " + response.status);
+        }
         return response.text();
       })
-      .then((html) => {
-        previewContent.innerHTML = html;
+      .then(function (html) {
+        if (previewContent) {
+          previewContent.innerHTML = html;
+        }
       })
-      .catch((e) => {
+      .catch(function (e) {
         console.error("Fehler beim Laden des HTML-Inhalts:", e);
-        previewContent.innerHTML = `<p style="color: red;">Fehler: Der Inhalt konnte nicht geladen werden.</p>`;
+        if (previewContent) {
+          previewContent.innerHTML =
+            '<p style="color: red;">Fehler: Der Inhalt konnte nicht geladen werden.</p>';
+        }
       });
   }
 
-  // --- LINKE NAVIGATION ---
+  // Linke Navigation
   if (navLeft) {
     navLeft.addEventListener("click", function (event) {
       const button = event.target.closest("button[data-section]");
@@ -83,26 +105,32 @@ document.addEventListener("DOMContentLoaded", function () {
         loadHtmlContent(button.dataset.section);
       }
     });
-    // RESPONSIVE: Tooltip für die linke Navigation wurde entfernt
   }
 
-  // --- TEIL 3: RECHTE NAVIGATION ---
+  // Rechte Navigation (Accordion + Previews)
   if (navRight) {
     let fetchTimeout;
 
-    // EINZIGER 'mouseover' LISTENER FÜR DIE RECHTE NAVIGATION
     navRight.addEventListener("mouseover", function (event) {
       const link = event.target.closest(".file-list-item a");
-      if (link && link.href.includes("/static/certificates")) {
+      if (link && link.href.indexOf("/static/certificates") !== -1) {
         const filePath = link.href;
         const fileExtension = filePath.split(".").pop().toLowerCase();
-        if (["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
-          previewContent.innerHTML = `<img src="${filePath}" style="max-width: 100%; height: auto; border-radius: 8px;">`;
-        } else if (fileExtension === "pdf") {
-          previewContent.innerHTML = `<iframe src="${filePath}" style="width: 100%; height: 60vh; border: none;"></iframe>`;
+
+        if (previewContent) {
+          if (["jpg", "jpeg", "png", "gif"].indexOf(fileExtension) !== -1) {
+            previewContent.innerHTML =
+              '<img src="' +
+              filePath +
+              '" style="max-width: 100%; height: auto; border-radius: 8px;">';
+          } else if (fileExtension === "pdf") {
+            previewContent.innerHTML =
+              '<iframe src="' +
+              filePath +
+              '" style="width: 100%; height: 60vh; border: none;"></iframe>';
+          }
         }
 
-        // RESPONSIVE: Tooltip-Text geändert
         globalTooltip.textContent = "double touch";
         globalTooltip.style.display = "block";
         return;
@@ -113,23 +141,27 @@ document.addEventListener("DOMContentLoaded", function () {
         const fileList = container.querySelector(".file-list");
         if (fileList.children.length > 0) return;
 
-        const category = container.dataset.category;
+        const category = container.getAttribute("data-category");
         const currentLangParam = window.location.search;
+
         clearTimeout(fetchTimeout);
-        fetchTimeout = setTimeout(() => {
-          fetch(`/certificates/${category}${currentLangParam}`)
-            .then((response) => response.json())
-            .then((files) => {
+        fetchTimeout = setTimeout(function () {
+          fetch("/certificates/" + category + currentLangParam)
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (files) {
               fileList.innerHTML = "";
-              if (files.length === 0) {
+              if (!files || files.length === 0) {
                 fileList.innerHTML =
                   '<li class="file-list-item"><a>Keine Einträge</a></li>';
               } else {
-                files.forEach((file) => {
+                files.forEach(function (file) {
                   const listItem = document.createElement("li");
                   listItem.className = "file-list-item";
                   const fileLink = document.createElement("a");
-                  fileLink.href = `/static/certificates/${category}/${file}`;
+                  fileLink.href =
+                    "/static/certificates/" + category + "/" + file;
                   fileLink.textContent = file
                     .split(".")
                     .slice(0, -1)
@@ -145,7 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // EINZIGER 'mouseout' LISTENER
     navRight.addEventListener("mouseout", function (event) {
       const link = event.target.closest(".file-list-item a");
       if (link) {
@@ -153,116 +184,276 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (!navRight.contains(event.relatedTarget)) {
-        previewContent.innerHTML = initialContent;
+        if (previewContent) {
+          previewContent.innerHTML = initialContent;
+        }
         globalTooltip.style.display = "none";
       }
     });
   }
 
-  // EIN globaler Listener für die Mausbewegung
+  // Tooltip-Position mit Maus mitführen
   document.addEventListener("mousemove", function (event) {
     if (globalTooltip.style.display === "block") {
-      globalTooltip.style.left = `${event.clientX + 15}px`;
-      globalTooltip.style.top = `${event.clientY}px`;
+      globalTooltip.style.left = event.clientX + 15 + "px";
+      globalTooltip.style.top = event.clientY + "px";
     }
   });
 
   // -----------------------------------------------------
-  // BALLOON-LOGIK: einmaliger Aufstieg + Klick-Dialog
+  // BALLOON-LOGIK: mehrere konfigurierbare Ballons
   // -----------------------------------------------------
-  (function initBalloon() {
-    const balloonLayer = document.getElementById("balloon-layer");
-    const balloon = document.getElementById("magic-balloon");
-    const message = document.getElementById("balloon-pop-message");
-    const closeBtn = message
-      ? message.querySelector(".balloon-message__close")
-      : null;
 
-    if (!balloonLayer || !balloon || !message || !closeBtn) return;
+  const BALLOON_CONFIGS = [
+    {
+      id: "cpmai",
+      xPercent: 48,
+      riseDurationSeconds: 18,
+      scaleStart: 0.55,
+      scaleEnd: 3.2,
+      theme: "cpmai", // verwendet das Standard-Gradient-Theme
+      delayMs: 0,
+      // kein auto-close: Dialog bleibt, bis "Schließen" geklickt wird
+      text: {
+        de: {
+          title: "CPMAI in der Praxis",
+          body: "Wenn wir KI- oder Automationsprojekte mit CPMAI strukturieren, landen weniger Ideen auf dem Proof-of-Concept-Friedhof – und mehr Lösungen erzeugen echte Wertschöpfung im Betrieb.",
+        },
+        en: {
+          title: "CPMAI in Practice",
+          body: "When we structure AI and automation projects with CPMAI, fewer ideas end up on the proof-of-concept graveyard – and more solutions go live and create real business value.",
+        },
+      },
+    },
+    {
+      id: "explore",
+      xPercent: 36,
+      riseDurationSeconds: 20,
+      scaleStart: 0.5,
+      scaleEnd: 3.4,
+      theme: "secondary", // nutzt das alternative Theme aus CSS
+      delayMs: 3500,
+      // Beispiel: Dialog nach 15s automatisch schließen (optional)
+      // dismissAfterMs: 15000,
+      text: {
+        de: {
+          title: "Was ist Ihr nächster Schritt?",
+          body: "Zukünftig können wir auch über das Client-Portal Ihr Anliegen gemäß Ihren Bedürfnissen skizzieren – von der Diagnose bis zur Umsetzung. So wird aus vagen Ideen ein adaptiver Fahrplan.",
+        },
+        en: {
+          title: "What’s your next step?",
+          body: "In future, we can also use the client portal to sketch your request around your specific needs – from diagnosis through to implementation. This way, vague ideas turn into an adaptive roadmap.",
+        },
+      },
+    },
+  ];
 
-    // Optional: Steiggeschwindigkeit in Sekunden zentral einstellen
-    const BALLOON_RISE_SECONDS = 18; // anpassbar
+  function spawnBalloon(config, lang) {
+    const layer = document.getElementById("balloon-layer");
+    if (!layer) return;
+
+    // --- Ballon-Button ---
+    const balloon = document.createElement("button");
+    balloon.type = "button";
+    balloon.className = "balloon";
+    balloon.setAttribute("data-balloon-id", config.id);
+
+    const riseSeconds =
+      typeof config.riseDurationSeconds === "number"
+        ? config.riseDurationSeconds
+        : 18;
     balloon.style.setProperty(
       "--balloon-rise-duration",
-      BALLOON_RISE_SECONDS + "s"
+      riseSeconds.toString() + "s"
     );
 
+    if (typeof config.xPercent === "number") {
+      balloon.style.setProperty("--balloon-x", config.xPercent + "%");
+    }
+    if (typeof config.scaleStart === "number") {
+      balloon.style.setProperty(
+        "--balloon-scale-start",
+        config.scaleStart.toString()
+      );
+    }
+    if (typeof config.scaleEnd === "number") {
+      balloon.style.setProperty(
+        "--balloon-scale-end",
+        config.scaleEnd.toString()
+      );
+    }
+    if (config.theme) {
+      balloon.classList.add("balloon--theme-" + config.theme);
+    }
+
+    const inner = document.createElement("span");
+    inner.className = "balloon__inner";
+    const string = document.createElement("span");
+    string.className = "balloon__string";
+
+    balloon.appendChild(inner);
+    balloon.appendChild(string);
+    layer.appendChild(balloon);
+
+    // --- Dialog zum Ballon ---
+    const dialog = document.createElement("div");
+    dialog.className = "balloon-message";
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    dialog.setAttribute("aria-hidden", "true");
+
+    const content = document.createElement("div");
+    content.className = "balloon-message__content";
+
+    let textByLang = null;
+    if (config.text) {
+      if (lang === "de" && config.text.de) textByLang = config.text.de;
+      else if (lang === "en" && config.text.en) textByLang = config.text.en;
+      else if (config.text.de) textByLang = config.text.de;
+      else if (config.text.en) textByLang = config.text.en;
+    }
+    if (!textByLang) {
+      textByLang = { title: "", body: "" };
+    }
+
+    const title = textByLang.title || "";
+    const body = textByLang.body || "";
+
+    content.innerHTML =
+      "<h2>" +
+      title +
+      "</h2>" +
+      "<p>" +
+      body +
+      "</p>" +
+      '<button type="button" class="balloon-message__close">' +
+      (lang === "de" ? "Schließen" : "Close") +
+      "</button>";
+
+    dialog.appendChild(content);
+    layer.appendChild(dialog);
+
+    // --- Zustand & Hilfsfunktionen ---
     let clicked = false;
     let popped = false;
+    let dialogRemoved = false;
+    let autoCloseTimer = null;
 
     function showMessage() {
-      message.classList.add("is-visible");
-      message.setAttribute("aria-hidden", "false");
+      dialog.classList.add("is-visible");
+      dialog.setAttribute("aria-hidden", "false");
     }
 
     function hideMessage() {
-      message.classList.remove("is-visible");
-      message.setAttribute("aria-hidden", "true");
+      dialog.classList.remove("is-visible");
+      dialog.setAttribute("aria-hidden", "true");
     }
 
-    function hideBalloon() {
+    function removeBalloon() {
       balloon.classList.add("balloon--hidden");
+      setTimeout(function () {
+        balloon.remove();
+      }, 400);
+    }
+
+    function removeDialog() {
+      if (dialogRemoved) return;
+      dialogRemoved = true;
+      if (autoCloseTimer !== null) {
+        clearTimeout(autoCloseTimer);
+      }
+      hideMessage();
+      setTimeout(function () {
+        dialog.remove();
+      }, 250);
     }
 
     function popBalloon(withMessage) {
       if (popped) return;
       popped = true;
-      // kleine Pop-Animation (CSS) abspielen
       balloon.classList.add("balloon--popped");
 
       if (withMessage) {
+        // Klick: Dialog anzeigen, Ballon/Faden weg
         showMessage();
+        setTimeout(removeBalloon, 350);
+
+        if (typeof config.dismissAfterMs === "number") {
+          autoCloseTimer = window.setTimeout(function () {
+            removeDialog();
+          }, config.dismissAfterMs);
+        }
       } else {
-        // nach der Pop-Animation vollständig ausblenden
-        setTimeout(hideBalloon, 350);
+        // Kein Klick: leises Platzen ohne Dialog
+        setTimeout(function () {
+          removeBalloon();
+          dialog.remove();
+        }, 350);
       }
     }
 
-    // Klick während des Aufstiegs -> Nachricht anzeigen
+    // --- Event-Handler ---
+
+    // Klick auf Ballon -> Dialog öffnen
     balloon.addEventListener("click", function (ev) {
       ev.stopPropagation();
       clicked = true;
       popBalloon(true);
     });
 
-    // Wenn der Aufstieg zu Ende ist und kein Klick erfolgt ist -> leises Platzen
+    // Ende der Aufstiegsanimation -> ggf. leises Platzen
     balloon.addEventListener("animationend", function () {
       if (!clicked) {
         popBalloon(false);
       }
     });
 
-    // Dialog schließen
-    closeBtn.addEventListener("click", function () {
-      hideMessage();
-      // Ballon nach Klick dauerhaft weg
-      hideBalloon();
-    });
+    // "Schließen"-Button im Dialog
+    const closeBtn = content.querySelector(".balloon-message__close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function () {
+        removeDialog();
+      });
+    }
 
-    // Optional: Klick daneben schließt den Dialog ebenfalls
-    message.addEventListener("click", function (ev) {
-      if (ev.target === message) {
-        hideMessage();
-        hideBalloon();
+    // Klick auf den halbtransparenten Hintergrund
+    dialog.addEventListener("click", function (ev) {
+      if (ev.target === dialog) {
+        removeDialog();
       }
     });
-  })();
+  }
+
+  function initBalloons() {
+    const layer = document.getElementById("balloon-layer");
+    if (!layer || !BALLOON_CONFIGS || BALLOON_CONFIGS.length === 0) return;
+
+    BALLOON_CONFIGS.forEach(function (config, index) {
+      const delay =
+        typeof config.delayMs === "number" ? config.delayMs : index * 2500;
+      window.setTimeout(function () {
+        spawnBalloon(config, CURRENT_LANG);
+      }, delay);
+    });
+  }
+
+  // Ballons initial starten
+  initBalloons();
 });
 
-// ---- CTA unter dem Profilbild automatisch ein-/ausblenden ---------------
+// ---------------------------------------------------------
+// CTA unter Profilbild + NEWS-TICKER
+// ---------------------------------------------------------
 (function () {
   const preview = document.getElementById("preview-content");
   const cta = document.getElementById("ctaUnderProfile");
   if (!preview || !cta) return;
 
   function profileVisible() {
-    // Profile-Startzustand: figure.profile-figure existiert (und ist sichtbar)
     return !!preview.querySelector(".profile-figure");
   }
 
   function updateCTA() {
-    // CTA nur zeigen, wenn NUR das Profilbild im Preview steht
-    // (sprich: sobald Content via Navigation/Akkordeon geladen wird -> ausblenden)
     const show = profileVisible();
     cta.classList.toggle("is-hidden", !show);
   }
@@ -270,16 +461,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // 1) Beim ersten Laden
   updateCTA();
 
-  // 2) Auf DOM-Wechsel im Preview reagieren (Navigation lädt andere Inhalte hinein)
+  // 2) Auf DOM-Wechsel im Preview reagieren
   const mo = new MutationObserver(updateCTA);
   mo.observe(preview, { childList: true, subtree: true });
 
-  // 3) Sicherstellen, dass ein Klick links/rechts (der Content lädt) das Update triggert
+  // 3) Klicks in den Navs triggern ebenfalls ein Update
   const navLeft = document.querySelector(".nav-left");
   const navRight = document.querySelector(".nav-right");
-  [navLeft, navRight].forEach((el) => {
+  [navLeft, navRight].forEach(function (el) {
     if (!el) return;
-    el.addEventListener("click", () => setTimeout(updateCTA, 50));
+    el.addEventListener("click", function () {
+      setTimeout(updateCTA, 50);
+    });
   });
 
   // -----------------------------------------------------
@@ -296,32 +489,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const firstItem = track.querySelector(".news-ticker__item");
     if (!firstItem) return;
 
-    // Breiten messen
     const firstWidth = firstItem.getBoundingClientRect().width;
-    const viewportWidth = viewport.getBoundingClientRect().width;
 
-    // gap aus CSS-Variable lesen (Fallback: 48px)
     const styles = getComputedStyle(track);
     const gapValue =
       styles.getPropertyValue("gap") || styles.getPropertyValue("column-gap");
     const gap = parseFloat(gapValue) || 48;
 
-    // Distanz = Textbreite + Gap
-    // -> Wenn der erste Text komplett raus ist, sitzt der zweite an seiner Stelle.
     const distance = firstWidth + gap;
-
     track.style.setProperty("--ticker-distance", distance + "px");
 
-    // Optional: Dauer zusätzlich an Distanz koppeln (lesbare Geschwindigkeit)
-    const pxPerSecond = 80; // je größer, desto schneller
+    const pxPerSecond = 80;
     const duration = distance / pxPerSecond;
     track.style.animationDuration = duration + "s";
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", function () {
     initNewsTicker();
-    window.addEventListener("resize", () => {
-      // bei Resize neu berechnen
+    window.addEventListener("resize", function () {
       initNewsTicker();
     });
   });

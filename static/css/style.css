@@ -22,6 +22,8 @@ html {
   /* BALLOON-Parameter (kannst du bei Bedarf tweaken) */
   --balloon-start-size: 40px;
   --balloon-end-scale: 3.5;
+  --balloon-scale-start: 0.5;
+  --balloon-x: 50%;
 }
 
 * {
@@ -913,7 +915,7 @@ body {
 /* Der Button selbst – klickbar, animiert */
 .balloon {
   position: absolute;
-  left: 50%;
+  left: var(--balloon-x, 50%);
   bottom: -120px; /* startet knapp unter dem sichtbaren Bereich */
   transform: translateX(-50%);
   width: var(--balloon-start-size);
@@ -927,7 +929,7 @@ body {
   animation: balloon-rise var(--balloon-rise-duration, 18s) linear forwards;
 }
 
-/* Ballon-Körper */
+/* Standard-Theme für den Ballon-Körper */
 .balloon__inner {
   position: absolute;
   inset: 0;
@@ -941,7 +943,17 @@ body {
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
 }
 
-/* kleine Klick-Hand als Anreiz */
+/* Beispiel für ein alternatives Theme (z. B. zweiter Ballon) */
+.balloon--theme-secondary .balloon__inner {
+  background: radial-gradient(
+    circle at 30% 20%,
+    #e0f2fe 0,
+    #60a5fa 35%,
+    #1e3a8a 100%
+  );
+}
+
+/* kleines Hand-Icon als Klick-Hinweis */
 .balloon__inner::after {
   content: "👆";
   position: absolute;
@@ -960,19 +972,47 @@ body {
   left: 50%;
   top: 100%;
   transform: translateX(-50%);
+  transform-origin: top center;
+  /* leichtes Schwingen im "Wind" */
+  animation: balloon-string-sway 2.4s ease-in-out infinite;
 }
 
-/* Aufstiegs-Animation: von unten klein nach oben größer */
+/* Faden verschwindet, sobald der Ballon "popped" ist */
+.balloon--popped .balloon__string {
+  opacity: 0;
+}
+
+/* Keyframes für das Schwingen der Schnur */
+@keyframes balloon-string-sway {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-50%) rotate(3deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(-3deg);
+  }
+  75% {
+    transform: translateX(-50%) rotate(2deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+}
+
+/* Aufstiegs-Animation: von unten klein nach oben größer
+   Scale-Werte kommen aus Variablen und werden pro Ballon gesetzt */
 @keyframes balloon-rise {
   0% {
-    transform: translate(-50%, 20vh) scale(0.5);
+    transform: translate(-50%, 20vh) scale(var(--balloon-scale-start, 0.5));
     opacity: 0;
   }
   10% {
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -110vh) scale(var(--balloon-end-scale));
+    transform: translate(-50%, -110vh) scale(var(--balloon-scale-end, 3.5));
     opacity: 0.9;
   }
 }
