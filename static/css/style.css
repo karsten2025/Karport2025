@@ -880,7 +880,7 @@ body {
 /* Einzelne Textelemente */
 .news-ticker__item {
   font-size: var(--ticker-font-size);
-  font-weight: 400;
+  font-weight: 600;
   color: #eb6619;
 }
 
