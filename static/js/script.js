@@ -259,11 +259,11 @@ document.addEventListener("DOMContentLoaded", function () {
       text: {
         de: {
           title: "Ein PMO, das den Laden zusammenhält",
-          body: "Strategisch, Taktisch und Operativ ausrichten, Führung stärken: Das PMI-OPM-Modell und die PMI-PMOCP-Zertifizierung – ein duales Framework für PMO-Exzellenz.",
+          body: "Integration von strategischer Vision, taktischer Umsetzung und operativer Exzellenz: Das PMI-OPM-Modell und die PMI-PMOCP-Zertifizierung – ein duales Framework für den Erfolg von PMOs, das messbare Ergebnisse liefert, die organisatorische Agilität stärkt und den langfristigen Wert von Produkten, Portfolios, Programmen und Projekten maximiert.",
         },
         en: {
           title: "A PMO That Holds Things Together",
-          body: "Stratgic, Tactical, and Operational alignment, Empowering Leadership: The PMI OPM Model and PMI-PMOCP Certification—A Dual Framework for PMO Excellence.",
+          body: "Integrating Strategic Vision, Tactical Execution, and Operational Excellence: The PMI OPM Model and PMI-PMOCP Certification—A Dual Framework for PMO Success that drives measurable results, enhances organizational agility, and maximizes the long-term value of products, portfolios, programs, and projects.",
         },
       },
     },
