@@ -259,11 +259,11 @@ document.addEventListener("DOMContentLoaded", function () {
       text: {
         de: {
           title: "Ein PMO, das den Laden zusammenhält",
-          body: "Mit PMO-CP gestalten wir ein PMO, das Wachstum und ständigen Wandel im Alltag mitträgt: klare Standards, pragmatische Governance und ein zentraler Blick auf Produkte, Projekte, Programme und Portfolios – so dass viele parallele Initiativen handhabbar bleiben, ohne die Teams im Tagesgeschäft zu blockieren.",
+          body: "Strategisch, Taktisch und Operativ ausrichten, Führung stärken: Das PMI-OPM-Modell und die PMI-PMOCP-Zertifizierung – ein duales Framework für PMO-Exzellenz.",
         },
         en: {
           title: "A PMO That Holds Things Together",
-          body: "With PMO-CP, we design a PMO that supports growth and constant change in day-to-day operations: clear standards, pragmatic governance, and a central view across products, projects, programs, and portfolios – so that many parallel initiatives stay manageable without slowing down the teams doing the real work.",
+          body: "Stratgic, Tactical, and Operational alignment, Empowering Leadership: The PMI OPM Model and PMI-PMOCP Certification—A Dual Framework for PMO Excellence.",
         },
       },
     },
