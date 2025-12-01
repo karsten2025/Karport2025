@@ -237,12 +237,12 @@ document.addEventListener("DOMContentLoaded", function () {
       // dismissAfterMs: 15000,
       text: {
         de: {
-          title: "Was ist Ihr nächster Schritt?",
-          body: "Zukünftig können wir auch über das Client-Portal Ihr Anliegen gemäß Ihren Bedürfnissen skizzieren – von der Diagnose bis zur Umsetzung. So wird aus vagen Ideen ein adaptiver Fahrplan.",
+          title: "Wo endet Ihre Suche?",
+          body: "Wir verknüpfen Ihre verteilten Informationsquellen sicher mit KI – von der Datensichtung bis zur präzisen Antwort. So wird aus zeitraubender Recherche sofortiges Wissen.",
         },
         en: {
-          title: "What’s your next step?",
-          body: "In future, we can also use the client portal to sketch your request around your specific needs – from diagnosis through to implementation. This way, vague ideas turn into an adaptive roadmap.",
+          title: "Where does your search end?",
+          body: "We securely link your distributed information sources with AI – from data screening to precise answers. Thus, time-consuming research becomes instant knowledge.",
         },
       },
     },
