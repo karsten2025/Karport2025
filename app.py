@@ -7,6 +7,7 @@ from flask import (
     jsonify,
     redirect,
     make_response,
+    send_from_directory,
 )
 
 CLIENT_PORTAL = "https://client-portal-4wir.onrender.com"
@@ -30,6 +31,11 @@ def inject_language():
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/robots.txt")
+def robots_txt():
+    return send_from_directory(app.root_path, "robots.txt", mimetype="text/plain")
+
 
 
 @app.route("/load/<section>")
