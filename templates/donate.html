@@ -142,6 +142,15 @@
                 >
               </li>
             </ul>
+            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #666">
+              {% if lang == 'de' %} Wenn Sie möchten, können Sie nach der
+              PayPal-Zahlung hierher zurückkehren und unsere kleine
+              <a href="{{ url_for('donate_thanks') }}?lang=de">Dankeseite</a>
+              besuchen. {% else %} If you like, you can come back here after
+              your PayPal payment and visit our small
+              <a href="{{ url_for('donate_thanks') }}?lang=en">thank-you page</a
+              >. {% endif %}
+            </p>
           </div>
 
           <p style="margin-top: 1.5rem; font-size: 0.8rem; color: #888">

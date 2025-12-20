@@ -94,6 +94,14 @@ def donate():
         lang = "de"
     return render_template("donate.html", lang=lang)
 
+@app.route("/donate/thanks")
+def donate_thanks():
+    lang = request.args.get("lang", "de")
+    if lang not in ("de", "en"):
+        lang = "de"
+    return render_template("donate_thanks.html", lang=lang)
+
+
 
 @app.route("/sitemap.xml")
 def sitemap():
