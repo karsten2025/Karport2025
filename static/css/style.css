@@ -972,6 +972,89 @@ body {
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
 }
 
+/* Zentrales Label im Ballon – wird per JS gesetzt (Spenden/Donate) */
+.balloon__label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75em; /* skaliert mit dem Ballon mit */
+  font-weight: 600;
+  color: #f9fafb;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* Zentrales Label im Ballon – Text (Spenden/Donate) */
+.balloon__label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.45rem; /* leicht größer, skaliert mit */
+  font-weight: 600;
+  color: #ecfdf5;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 2; /* liegt über Emojis */
+}
+
+/* Grüner Donate-Ballon – dezentes Glühen */
+.balloon--theme-green .balloon__inner {
+  box-shadow: 0 18px 35px rgba(16, 185, 129, 0.35);
+  animation: donate-glow 2.8s ease-in-out infinite;
+}
+
+@keyframes donate-glow {
+  0% {
+    box-shadow: 0 18px 35px rgba(16, 185, 129, 0.3);
+  }
+  50% {
+    box-shadow: 0 24px 48px rgba(16, 185, 129, 0.7);
+  }
+  100% {
+    box-shadow: 0 18px 35px rgba(16, 185, 129, 0.3);
+  }
+}
+
+/* Handshake – höher über der Schrift */
+.balloon--theme-green .balloon__inner::before {
+  content: "🤝";
+  position: absolute;
+  top: 16%; /* vorher 22% -> höher */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem; /* etwas kleiner */
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
+  z-index: 1;
+}
+
+/* Herz – weiter unter der Schrift, kleiner */
+.balloon--theme-green .balloon__inner::after {
+  content: "❤️";
+  position: absolute;
+  bottom: 5%; /* vorher 18% -> tiefer */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem; /* kleiner, bleibt sicher im Ballon */
+  animation: donate-heart 1.25s ease-in-out infinite;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
+  z-index: 1;
+}
+
+@keyframes donate-heart {
+  0% {
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2); /* weniger Ausschlag */
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+  }
+}
+
 /* Schnur */
 .balloon__string {
   position: absolute;
@@ -1107,4 +1190,35 @@ body {
 
 .balloon-message__close:hover {
   background: #4b5563;
+}
+/* -------------------------------------------------
+   Beispielbeträge auf der Donate-Seite
+   ------------------------------------------------- */
+.donation-preset-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.25rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.donation-preset-list a {
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #111;
+  font-size: 0.85rem;
+  text-decoration: none;
+  background: #f9fafb;
+  color: #111;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+.donation-preset-list a:hover,
+.donation-preset-list a:focus {
+  background: #16a34a;
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25);
+  transform: translateY(-1px);
 }

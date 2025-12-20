@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     slides[currentSlide].classList.add("active");
   }
   if (slides.length > 1) {
-    setInterval(showNextSlide, 3000);
+    setInterval(showNextSlide, 6000);
   }
 
   // --- PREVIEW / NAVIGATION ---
@@ -267,6 +267,17 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       },
     },
+    {
+      id: "donate",
+      xPercent: 72,
+      riseDurationSeconds: 22,
+      scaleStart: 0.5,
+      scaleEnd: 3.0,
+      theme: "green", // wichtig für die CSS-Regeln
+      delayMs: 9000,
+      href: "/donate", // Klick führt zur Spendenseite (mit ?lang=…)
+      text: {}, // aktuell kein Dialogtext nötig
+    },
   ];
 
   function spawnBalloon(config, lang) {
@@ -309,6 +320,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const inner = document.createElement("span");
     inner.className = "balloon__inner";
+
+    // Zentrales Label für Text (Spenden/Donate etc.)
+    const label = document.createElement("span");
+    label.className = "balloon__label";
+
+    // Sprachabhängiger Text: für Donate explizit, sonst optional aus config.label
+    if (config.id === "donate") {
+      label.textContent = lang === "en" ? "Donate" : "Spenden";
+    } else if (config.label && typeof config.label === "object") {
+      label.textContent =
+        config.label[lang] || config.label.de || config.label.en || "";
+    }
+    // Label nur anhängen, wenn irgendwas drinsteht (sonst leer lassen)
+    if (label.textContent && label.textContent.trim() !== "") {
+      inner.appendChild(label);
+    }
+
     const string = document.createElement("span");
     string.className = "balloon__string";
 
@@ -415,11 +443,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // --- Event-Handler ---
 
-    // Klick auf Ballon -> Dialog öffnen
+    // Klick auf Ballon -> Dialog oder Navigation
     balloon.addEventListener("click", function (ev) {
       ev.stopPropagation();
       clicked = true;
-      popBalloon(true);
+
+      // Wenn eine href definiert ist: Navigation statt Dialog
+      if (config.href) {
+        // aktuelle Sprach-Query (?lang=de / ?lang=en) mitnehmen
+        const currentSearch = window.location.search || "";
+        const targetUrl = config.href + currentSearch;
+
+        // kleiner Pop-Effekt, dann Navigation
+        popBalloon(false);
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 250);
+      } else {
+        // wie bisher: Dialog anzeigen
+        popBalloon(true);
+      }
     });
 
     // Ende der Aufstiegsanimation -> ggf. leises Platzen
