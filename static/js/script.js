@@ -213,6 +213,10 @@ document.addEventListener("DOMContentLoaded", function () {
       scaleEnd: 3.2,
       theme: "cpmai", // verwendet das Standard-Gradient-Theme
       delayMs: 0,
+      label: {
+        de: "CPMAI",
+        en: "CPMAI",
+      },
       // kein auto-close: Dialog bleibt, bis "Schließen" geklickt wird
       text: {
         de: {
@@ -233,6 +237,10 @@ document.addEventListener("DOMContentLoaded", function () {
       scaleEnd: 3.4,
       theme: "secondary", // nutzt das alternative Theme aus CSS
       delayMs: 3500,
+      label: {
+        de: "KI-Explorer",
+        en: "AI Explorer",
+      },
       // Beispiel: Dialog nach 15s automatisch schließen (optional)
       // dismissAfterMs: 15000,
       text: {
@@ -254,6 +262,10 @@ document.addEventListener("DOMContentLoaded", function () {
       scaleEnd: 3.2,
       theme: "gray",
       delayMs: 7000,
+      label: {
+        de: "PMO-Setup",
+        en: "PMO setup",
+      },
       // optional: Dialog nach X ms automatisch schließen
       // dismissAfterMs: 12000,
       text: {
@@ -321,20 +333,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const inner = document.createElement("span");
     inner.className = "balloon__inner";
 
-    // Zentrales Label für Text (Spenden/Donate etc.)
+    // Zentrales Label im Ballon
     const label = document.createElement("span");
     label.className = "balloon__label";
 
-    // Sprachabhängiger Text: für Donate explizit, sonst optional aus config.label
     if (config.id === "donate") {
+      // Donate-Ballon: Text kommt aus DE/EN, Icons (🤝 / ❤️) per CSS-Pseudo-Element
       label.textContent = lang === "en" ? "Donate" : "Spenden";
     } else if (config.label && typeof config.label === "object") {
+      // Drei anderen Ballons: kurzer Text aus config.label
       label.textContent =
         config.label[lang] || config.label.de || config.label.en || "";
     }
-    // Label nur anhängen, wenn irgendwas drinsteht (sonst leer lassen)
+
     if (label.textContent && label.textContent.trim() !== "") {
       inner.appendChild(label);
+    }
+
+    // Für die drei "normalen" Ballons: Klickfinger 👆 mittig unter dem Text
+    if (config.id !== "donate") {
+      const pointer = document.createElement("span");
+      pointer.className = "balloon__icon balloon__icon--pointer";
+      pointer.textContent = "👆";
+      inner.appendChild(pointer);
     }
 
     const string = document.createElement("span");

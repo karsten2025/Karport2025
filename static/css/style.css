@@ -20,7 +20,7 @@ html {
   --ticker-gap: 3rem; /* Abstand zwischen Text 1 und 2 */
 
   /* BALLOON-Parameter (kannst du bei Bedarf tweaken) */
-  --balloon-start-size: 40px;
+  --balloon-start-size: 50px;
   --balloon-end-scale: 3.5;
   --balloon-scale-start: 0.5;
   --balloon-x: 50%;
@@ -929,7 +929,7 @@ body {
   animation: balloon-rise var(--balloon-rise-duration, 18s) linear forwards;
 }
 
-/* Standard-Theme für den Ballon-Körper */
+/* Standard-Theme für den Ballon-Körper + Inhalt */
 .balloon__inner {
   position: absolute;
   inset: 0;
@@ -941,9 +941,20 @@ body {
     #ea580c 100%
   );
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
+
+  /* Inhalt zentriert: Text oben, Icon darunter */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.18em;
+
+  /* etwas Luft zur Ballonkante, aber nicht zu viel */
+  padding: 0.4em 0.8em;
+  box-sizing: border-box;
 }
 
-/* Beispiel für ein alternatives Theme (z. B. zweiter Ballon) */
+/* Alternatives Theme (z. B. zweiter Ballon) */
 .balloon--theme-secondary .balloon__inner {
   background: radial-gradient(
     circle at 30% 20%,
@@ -952,6 +963,7 @@ body {
     #1e3a8a 100%
   );
 }
+
 /* Neutrales graues Theme (rechter Ballon) */
 .balloon--theme-gray .balloon__inner {
   background: radial-gradient(
@@ -962,42 +974,35 @@ body {
   );
 }
 
-/* kleines Hand-Icon als Klick-Hinweis */
-.balloon__inner::after {
-  content: "👆";
-  position: absolute;
-  bottom: 18%;
-  right: 18%;
-  font-size: 0.9rem;
-  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
-}
-
-/* Zentrales Label im Ballon – wird per JS gesetzt (Spenden/Donate) */
+/* Zentrales Label im Ballon – Text wie "CPMAI", "KI-Explorer", "PMO-Setup", "Spenden" */
 .balloon__label {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.75em; /* skaliert mit dem Ballon mit */
-  font-weight: 600;
-  color: #f9fafb;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  pointer-events: none;
-}
+  display: block;
+  margin: 0 auto;
 
-/* Zentrales Label im Ballon – Text (Spenden/Donate) */
-.balloon__label {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.45rem; /* leicht größer, skaliert mit */
+  max-width: 80%; /* hart begrenzt, damit nichts aus dem Kreis ragt */
+  padding: 0 0.1em;
+
+  font-size: 0.34rem; /* klein genug, damit es selbst bei 2 Zeilen passt */
   font-weight: 600;
+  letter-spacing: 0.01em;
   color: #ecfdf5;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   pointer-events: none;
-  white-space: nowrap;
-  z-index: 2; /* liegt über Emojis */
+
+  text-align: center;
+  white-space: normal; /* darf bei Bedarf auf 2 Zeilen umbrechen */
+  line-height: 1.2;
+  z-index: 2;
+}
+
+/* optionaler Klickfinger unter dem Text */
+.balloon__icon {
+  font-size: 0.55rem;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}
+.balloon__icon--pointer {
+  margin-top: 0.08em;
 }
 
 /* Grüner Donate-Ballon – eigener Farbverlauf + Glühen */
@@ -1005,8 +1010,8 @@ body {
   background: radial-gradient(
     circle at 30% 20%,
     #d1fae5 0,
-    /* sehr helles Grün-Highlight */ #34d399 35%,
-    /* Mittelgrün */ #059669 100% /* dunkler Rand */
+    #34d399 35%,
+    #059669 100%
   );
   box-shadow: 0 18px 35px rgba(16, 185, 129, 0.35);
   animation: donate-glow 2.8s ease-in-out infinite;
@@ -1024,26 +1029,26 @@ body {
   }
 }
 
-/* Handshake – höher über der Schrift */
+/* Handshake – höher über der Schrift im grünen Donate-Ballon */
 .balloon--theme-green .balloon__inner::before {
   content: "🤝";
   position: absolute;
-  top: 16%; /* vorher 22% -> höher */
+  top: 16%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.65rem; /* etwas kleiner */
+  font-size: 0.65rem;
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
   z-index: 1;
 }
 
-/* Herz – weiter unter der Schrift, kleiner */
+/* Herz – unter der Schrift im grünen Donate-Ballon */
 .balloon--theme-green .balloon__inner::after {
   content: "❤️";
   position: absolute;
-  bottom: 5%; /* vorher 18% -> tiefer */
+  bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.65rem; /* kleiner, bleibt sicher im Ballon */
+  font-size: 0.65rem;
   animation: donate-heart 1.25s ease-in-out infinite;
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
   z-index: 1;
@@ -1054,7 +1059,7 @@ body {
     transform: translateX(-50%) scale(1);
   }
   50% {
-    transform: translateX(-50%) scale(1.2); /* weniger Ausschlag */
+    transform: translateX(-50%) scale(1.2);
   }
   100% {
     transform: translateX(-50%) scale(1);
@@ -1071,13 +1076,67 @@ body {
   top: 100%;
   transform: translateX(-50%);
   transform-origin: top center;
-  /* leichtes Schwingen im "Wind" */
   animation: balloon-string-sway 2.4s ease-in-out infinite;
 }
-
-/* Faden verschwindet, sobald der Ballon "popped" ist */
 .balloon--popped .balloon__string {
   opacity: 0;
+}
+
+@keyframes balloon-string-sway {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-50%) rotate(3deg);
+  }
+  50% {
+    transform: translateX(-50%) rotate(-3deg);
+  }
+  75% {
+    transform: translateX(-50%) rotate(2deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+}
+
+/* Aufstiegs-Animation */
+@keyframes balloon-rise {
+  0% {
+    transform: translate(-50%, 20vh) scale(var(--balloon-scale-start, 0.5));
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -110vh) scale(var(--balloon-scale-end, 3.5));
+    opacity: 0.9;
+  }
+}
+
+.balloon--hidden {
+  display: none;
+}
+
+/* Pop-Effekt */
+.balloon--popped .balloon__inner {
+  animation: balloon-pop 0.35s ease-out forwards;
+}
+
+@keyframes balloon-pop {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
 }
 
 /* Keyframes für das Schwingen der Schnur */
