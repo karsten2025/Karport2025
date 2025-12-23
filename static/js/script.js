@@ -594,5 +594,42 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("resize", function () {
       initNewsTicker();
     });
+    // -----------------------------------------------------
+    // WHY ME TOOLTIP LOADER (ROBUST VERSION)
+    // -----------------------------------------------------
+    (function initWhyMe() {
+      const bubble = document.getElementById("whyme-bubble");
+      if (!bubble) return;
+
+      // 1. Sprache direkt frisch aus dem Body-Tag lesen
+      // Das ist sicherer als auf externe Variablen zu vertrauen
+      let lang = document.body.getAttribute("data-lang");
+
+      // 2. Fallback: Falls Body leer, URL prüfen
+      if (!lang) {
+        const params = new URLSearchParams(window.location.search);
+        lang = params.get("lang");
+      }
+
+      // 3. Sicherheits-Check: Nur "en" oder "de" zulassen
+      if (lang !== "en") lang = "de";
+
+      // 4. Abruf mit Cache-Buster (&t=...), damit der Browser nicht die alte Version speichert
+      fetch("/load/whyme?lang=" + lang + "&t=" + Date.now())
+        .then(function (response) {
+          if (!response.ok)
+            throw new Error("Fehler beim Laden: " + response.status);
+          return response.text();
+        })
+        .then(function (html) {
+          bubble.innerHTML = html;
+        })
+        .catch(function (err) {
+          console.warn("WhyMe-Tooltip konnte nicht geladen werden:", err);
+          // Fallback-Text, falls gar nichts geht
+          bubble.innerHTML =
+            "<div style='padding:1rem;text-align:center;'>System ready.</div>";
+        });
+    })();
   });
 })();

@@ -1287,3 +1287,129 @@ body {
   box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25);
   transform: translateY(-1px);
 }
+
+/* ============================================= */
+/* WHY ME - EDLE SPRECHBLASE (TOOLTIP)           */
+/* ============================================= */
+
+/* Ankerpunkt für die Blase */
+.profile-figure.has-tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help; /* Mauszeiger wird zum Fragezeichen */
+}
+
+/* Die Blase selbst */
+.whyme-bubble {
+  position: absolute;
+  /* ÄNDERUNG: Statt bottom: 110% (oben raus) setzen wir sie mittig AUF das Bild oder knapp darunter */
+  top: 60%; /* Startet etwas unterhalb der Mitte des Bildes */
+  left: 50%;
+  transform: translate(-50%, 0) scale(0.9);
+  width: 300px; /* Etwas kompakter */
+  background: rgba(20, 20, 20, 0.98); /* Fast deckend */
+  color: #f3f4f6;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 9999; /* Maximaler Z-Index */
+  pointer-events: none;
+  text-align: left;
+  backdrop-filter: blur(10px);
+}
+
+/* Der Pfeil - zeigt jetzt nach OBEN (weil Blase unten ist) */
+.whyme-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* Pfeil sitzt OBEN auf der Blase */
+  left: 50%;
+  margin-left: -10px;
+  border-width: 10px;
+  border-style: solid;
+  /* Farbe angepasst: Pfeil zeigt nach oben */
+  border-color: transparent transparent rgba(20, 20, 20, 0.98) transparent;
+}
+
+/* Hover-Effekt: Leicht nach oben schweben */
+.profile-figure.has-tooltip:hover .whyme-bubble {
+  opacity: 1;
+  visibility: visible;
+  /* Schiebt die Blase sanft in Position */
+  transform: translate(-50%, 20px) scale(1);
+  pointer-events: auto;
+}
+
+/* Hover-Effekt: Einblenden */
+.profile-figure.has-tooltip:hover .whyme-bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0) scale(1);
+  pointer-events: auto;
+}
+
+/* TYPOGRAPHIE IN DER BLASE */
+.whyme-header {
+  font-family: "Corinthiago", cursive; /* Deine Handschrift */
+  font-size: 2rem;
+  color: var(--accent-color);
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.whyme-icon {
+  font-style: normal;
+  font-size: 1.5rem;
+}
+
+.whyme-body p {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+  color: #e5e7eb; /* Helles Grau für gute Lesbarkeit */
+}
+
+.whyme-body p:last-child {
+  margin-bottom: 0;
+}
+
+.text-accent {
+  color: var(--accent-color);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Lade-Spinner (falls Netz langsam ist) */
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--accent-color);
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* HANDY-ANPASSUNG */
+@media (max-width: 768px) {
+  .whyme-bubble {
+    width: 290px;
+    padding: 1.2rem;
+    left: 50%;
+    /* Auf Handy etwas vorsichtiger positionieren */
+  }
+}
