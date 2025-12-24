@@ -594,47 +594,5 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("resize", function () {
       initNewsTicker();
     });
-    // -----------------------------------------------------
-    // WHY ME TOOLTIP LOADER (BULLETPROOF VERSION)
-    // -----------------------------------------------------
-    (function initWhyMe() {
-      const bubble = document.getElementById("whyme-bubble");
-      if (!bubble) return;
-
-      // 1. Sicherung: Spinner nach 5 Sekunden zwangsweise entfernen, falls Server hängt
-      const safetyTimeout = setTimeout(() => {
-        if (bubble.innerHTML.includes("spinner")) {
-          bubble.innerHTML =
-            "<div style='padding:1rem;text-align:center;font-size:0.8rem;'>Inhalt lädt... <br>(Klicken zum Aktualisieren)</div>";
-          bubble.onclick = () => location.reload();
-          bubble.style.pointerEvents = "auto";
-        }
-      }, 5000);
-
-      // 2. Sprache bestimmen
-      let lang = document.body.getAttribute("data-lang");
-      if (!lang) {
-        const params = new URLSearchParams(window.location.search);
-        lang = params.get("lang");
-      }
-      if (lang !== "en") lang = "de";
-
-      // 3. Abruf mit Zeitstempel gegen Caching
-      fetch("/load/whyme?lang=" + lang + "&t=" + Date.now())
-        .then(function (response) {
-          if (!response.ok) throw new Error("Status " + response.status);
-          return response.text();
-        })
-        .then(function (html) {
-          clearTimeout(safetyTimeout); // Timeout stoppen, alles gut
-          bubble.innerHTML = html;
-        })
-        .catch(function (err) {
-          clearTimeout(safetyTimeout);
-          console.warn("WhyMe Fehler:", err);
-          // Dezenten Fallback anzeigen statt Spinner
-          bubble.innerHTML = "<div style='padding:1rem;'>System ready.</div>";
-        });
-    })();
   });
 })();

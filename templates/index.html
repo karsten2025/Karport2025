@@ -134,7 +134,8 @@
             />
 
             <div id="whyme-bubble" class="whyme-bubble" aria-hidden="true">
-              <div class="spinner"></div>
+              {% if lang == 'de' %} {% include 'partials/whyme.de.html' %} {%
+              else %} {% include 'partials/whyme.en.html' %} {% endif %}
             </div>
           </figure>
 
