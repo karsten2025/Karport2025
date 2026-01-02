@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         en: {
           title: "CPMAI in Practice",
-          body: "When we structure AI and automation projects with CPMAI, fewer ideas end up on the proof-of-concept graveyard – and more solutions go live and create real business value.",
+          body: "When we structure AI and automation projects with CPMAI, fewer ideas end up on the proof-of-concept graveyard – and more solutions go live and create real business value.<br><br><a href='https://pmo-value-generator-demo.vercel.app/' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Mehr erfahren</a>",
         },
       },
     },
@@ -271,11 +271,13 @@ document.addEventListener("DOMContentLoaded", function () {
       text: {
         de: {
           title: "Ein PMO, das den Laden zusammenhält",
-          body: "Integration von strategischer Vision, taktischer Umsetzung und operativer Exzellenz: Das PMI-OPM-Modell und die PMI-PMOCP-Zertifizierung – ein duales Framework für den Erfolg von PMOs, das messbare Ergebnisse liefert, die organisatorische Agilität stärkt und den langfristigen Wert von Produkten, Portfolios, Programmen und Projekten maximiert.",
+          // Hier habe ich den Link-Tag wieder vollständig eingefügt
+          body: "Integration von strategischer Vision, taktischer Umsetzung und operativer Exzellenz: Das PMI-OPM-Modell und die PMI-PMOCP-Zertifizierung – ein duales Framework für den Erfolg von PMOs, das messbare Ergebnisse liefert, die organisatorische Agilität stärkt und den langfristigen Wert von Produkten, Portfolios, Programmen und Projekten maximiert.<br><br><a href='https://pmo-value-generator-demo.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Mehr erfahren</a>",
         },
         en: {
           title: "A PMO That Holds Things Together",
-          body: "Integrating Strategic Vision, Tactical Execution, and Operational Excellence: The PMI OPM Model and PMI-PMOCP Certification—A Dual Framework for PMO Success that drives measurable results, enhances organizational agility, and maximizes the long-term value of products, portfolios, programs, and projects.",
+          // Auch hier für Englisch ergänzt
+          body: "Integrating Strategic Vision, Tactical Execution, and Operational Excellence: The PMI OPM Model and PMI-PMOCP Certification—A Dual Framework for PMO Success that drives measurable results, enhances organizational agility, and maximizes the long-term value of products, portfolios, programs, and projects.<br><br><a href='https://pmo-value-generator-demo.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Learn more</a>",
         },
       },
     },
