@@ -536,6 +536,38 @@ document.addEventListener("DOMContentLoaded", function () {
   const messagesArea = document.getElementById("kz-chat-messages");
 
   if (triggerBtn && chatWindow) {
+    // 1. Definition der Übersetzungen
+    const translations = {
+      de: {
+        greeting:
+          "Hi! Ich bin der KI-Assistent von Karsten. Fragen Sie mich alles über seine Projekte und Erfahrungen.",
+        placeholder: "Ihre Frage...",
+      },
+      en: {
+        greeting:
+          "Hi! I am Karsten's AI assistant. Ask me anything about his projects and experiences.",
+        placeholder: "Your question...",
+      },
+    };
+
+    // 2. Nachricht im UI anzeigen (Diese Funktion muss zuerst definiert sein)
+    const addMsg = (text, sender) => {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `kz-message kz-${sender}-message`;
+      msgDiv.textContent = text;
+      messagesArea.appendChild(msgDiv);
+      messagesArea.scrollTop = messagesArea.scrollHeight;
+      return msgDiv;
+    };
+
+    // 3. Sprache ermitteln und Begrüßung initialisieren
+    // Nutzt die bereits oben in Ihrer main.js definierte Konstante CURRENT_LANG
+    const welcome = translations[CURRENT_LANG] || translations["de"];
+
+    // Begrüßung senden, sobald die Seite lädt
+    addMsg(welcome.greeting, "bot");
+    if (chatInput) chatInput.placeholder = welcome.placeholder;
+
     // Öffnen / Schließen
     [triggerBtn, closeBtn].forEach((btn) => {
       if (btn) {
@@ -545,16 +577,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       }
     });
-
-    // Nachricht im UI anzeigen
-    const addMsg = (text, sender) => {
-      const msgDiv = document.createElement("div");
-      msgDiv.className = `kz-message kz-${sender}-message`;
-      msgDiv.textContent = text;
-      messagesArea.appendChild(msgDiv);
-      messagesArea.scrollTop = messagesArea.scrollHeight;
-      return msgDiv;
-    };
 
     // Absenden an Flask
     chatForm.addEventListener("submit", async (e) => {
@@ -571,10 +593,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const response = await fetch("/ask", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          // Sende die Nachricht UND die aktuelle Sprache (CURRENT_LANG) mit
           body: JSON.stringify({
             message: message,
-            lang: CURRENT_LANG,
+            lang: CURRENT_LANG, // Nutzt die globale Spracheinstellung
           }),
         });
         const data = await response.json();

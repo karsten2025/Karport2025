@@ -11,6 +11,7 @@ from flask import (
 )
 from dotenv import load_dotenv
 from google import genai
+from datetime import datetime  # NEU: Für die Zeitberechnung
 
 # 1. KONFIGURATION & INITIALISIERUNG
 load_dotenv()
@@ -49,10 +50,15 @@ def index():
 
 # 5. CHATBOT-ROUTE (Gemini 2.0 Flash - Optimiert für Ihr bezahltes Konto)
 @app.route("/ask", methods=["POST"])
+@app.route("/ask", methods=["POST"])
 def ask_gemini():
     data = request.get_json()
     user_message = data.get("message")
-    lang = data.get("lang", "de")
+    lang = data.get("lang", g.lang)
+
+    # NEU: Aktuelles Datum formatieren
+    today = datetime.now().strftime("%d. %B %Y")
+
     kb_content = load_karsten_knowledge(lang)
 
     try:
@@ -60,16 +66,18 @@ def ask_gemini():
             model="gemini-2.0-flash",
             config={
                 "system_instruction": (
-                    f"You are Karsten Zenk's AI assistant. "
-                    f"Answer in {'German' if lang == 'de' else 'English'}. "
-                    f"Use ONLY this knowledge: {kb_content}"
+                    f"Du bist der KI-Assistent von Karsten Zenk. Heute ist der {today}. "
+                    f"Antworte strikt in der Sprache: {'Deutsch' if lang == 'de' else 'Englisch'}. "
+                    f"Nutze dieses Wissen: {kb_content}. "
+                    "Du darfst logische Berechnungen (wie das aktuelle Alter) basierend auf dem heutigen Datum durchführen. "
+                    "Falls Informationen fehlen, verweise auf Karsten Zenk persönlich."
                 )
             },
             contents=user_message,
         )
         return jsonify({"reply": response.text})
     except Exception as e:
-        return jsonify({"reply": f"Error: {str(e)}"}), 500
+        return jsonify({"reply": f"API-Fehler: {str(e)}"}), 500
 
 
 # 6. AKKORDEON-LOGIK (Ihre Referenz - Repariert)
