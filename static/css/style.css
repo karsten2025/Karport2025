@@ -1603,6 +1603,31 @@ body {
 }
 
 /* 7. Eingabe-Bereich */
+/* Das Fenster braucht eine feste oder maximale Höhe */
+#kz-chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 500px; /* Festgelegte Höhe für Stabilität */
+  max-height: 80vh; /* Verhindert, dass es auf kleinen Bildschirmen oben/unten rausragt */
+}
+
+/* Das Nachrichtenfeld muss scrollen dürfen */
+#kz-chat-messages {
+  flex: 1; /* Nimmt den restlichen Platz ein */
+  overflow-y: auto; /* Aktiviert das Scrollen */
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Das Formular bleibt immer am unteren Rand fixiert */
+#kz-chat-form {
+  flex-shrink: 0;
+  border-top: 1px solid #444;
+  padding: 10px;
+  background: #1e1e1e;
+}
 .kz-input-area {
   padding: 15px;
   background: rgba(0, 0, 0, 0.2);

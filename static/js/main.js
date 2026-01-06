@@ -536,7 +536,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const messagesArea = document.getElementById("kz-chat-messages");
 
   if (triggerBtn && chatWindow) {
-    // 1. Definition der Übersetzungen
+    // 1. Übersetzungen definieren
     const translations = {
       de: {
         greeting:
@@ -550,25 +550,30 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     };
 
-    // 2. Nachricht im UI anzeigen (Diese Funktion muss zuerst definiert sein)
+    // 2. Die zentrale Funktion (MIT Scroll-Logik)
     const addMsg = (text, sender) => {
       const msgDiv = document.createElement("div");
       msgDiv.className = `kz-message kz-${sender}-message`;
       msgDiv.textContent = text;
       messagesArea.appendChild(msgDiv);
-      messagesArea.scrollTop = messagesArea.scrollHeight;
+
+      // Sorgt dafür, dass das Fenster immer nach unten zum neuesten Text springt
+      messagesArea.scrollTo({
+        top: messagesArea.scrollHeight,
+        behavior: "smooth",
+      });
       return msgDiv;
     };
 
-    // 3. Sprache ermitteln und Begrüßung initialisieren
-    // Nutzt die bereits oben in Ihrer main.js definierte Konstante CURRENT_LANG
+    // 3. Initialisierung (Sprache & Begrüßung)
     const welcome = translations[CURRENT_LANG] || translations["de"];
 
-    // Begrüßung senden, sobald die Seite lädt
+    // Altes löschen (Reset) und Begrüßung senden
+    messagesArea.innerHTML = "";
     addMsg(welcome.greeting, "bot");
     if (chatInput) chatInput.placeholder = welcome.placeholder;
 
-    // Öffnen / Schließen
+    // 4. Event-Handler (Öffnen/Schließen)
     [triggerBtn, closeBtn].forEach((btn) => {
       if (btn) {
         btn.addEventListener("click", () => {
@@ -578,7 +583,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // Absenden an Flask
+    // 5. Absenden an Flask
     chatForm.addEventListener("submit", async (e) => {
       e.preventDefault();
       const message = chatInput.value.trim();
@@ -595,11 +600,14 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             message: message,
-            lang: CURRENT_LANG, // Nutzt die globale Spracheinstellung
+            lang: CURRENT_LANG,
           }),
         });
         const data = await response.json();
         loadingMsg.textContent = data.reply || "Fehler in der Antwort.";
+
+        // Nochmal scrollen, falls die Antwort sehr lang ist
+        messagesArea.scrollTop = messagesArea.scrollHeight;
       } catch (err) {
         loadingMsg.textContent = "Verbindung fehlgeschlagen.";
       }
