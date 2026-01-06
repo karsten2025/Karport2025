@@ -526,6 +526,64 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Ballons initial starten
   initBalloons();
+
+  // --- CHATBOT WIDGET LOGIC ---
+  const triggerBtn = document.getElementById("kz-chat-trigger");
+  const closeBtn = document.getElementById("kz-chat-close");
+  const chatWindow = document.getElementById("kz-chat-window");
+  const chatForm = document.getElementById("kz-chat-form");
+  const chatInput = document.getElementById("kz-chat-input");
+  const messagesArea = document.getElementById("kz-chat-messages");
+
+  if (triggerBtn && chatWindow) {
+    // Öffnen / Schließen
+    [triggerBtn, closeBtn].forEach((btn) => {
+      if (btn) {
+        btn.addEventListener("click", () => {
+          chatWindow.classList.toggle("kz-active");
+          if (chatWindow.classList.contains("kz-active")) chatInput.focus();
+        });
+      }
+    });
+
+    // Nachricht im UI anzeigen
+    const addMsg = (text, sender) => {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `kz-message kz-${sender}-message`;
+      msgDiv.textContent = text;
+      messagesArea.appendChild(msgDiv);
+      messagesArea.scrollTop = messagesArea.scrollHeight;
+      return msgDiv;
+    };
+
+    // Absenden an Flask
+    chatForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const message = chatInput.value.trim();
+      if (!message) return;
+
+      addMsg(message, "user");
+      chatInput.value = "";
+
+      const loadingMsg = addMsg("...", "bot");
+
+      try {
+        const response = await fetch("/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // Sende die Nachricht UND die aktuelle Sprache (CURRENT_LANG) mit
+          body: JSON.stringify({
+            message: message,
+            lang: CURRENT_LANG,
+          }),
+        });
+        const data = await response.json();
+        loadingMsg.textContent = data.reply || "Fehler in der Antwort.";
+      } catch (err) {
+        loadingMsg.textContent = "Verbindung fehlgeschlagen.";
+      }
+    });
+  }
 });
 
 // ---------------------------------------------------------
