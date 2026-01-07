@@ -184,3 +184,83 @@ Karsten Zenk pursues an interdisciplinary approach deeply rooted in Systems Theo
    Key Thinkers: Alan Watts, Eckhart Tolle.
 
    Application: Maintaining composure and overview (mindfulness) even during high-pressure phases of programs and portfolios. The goal is to transform operational stress (suffer) into constructive value creation and joy.
+
+# Knowledge Base: Cooperation Models & Service Portfolio
+
+This document describes the specific roles, contexts, and intervention levels for collaborating with potential clients.
+
+## 1. Available Roles (Personas)
+
+The chatbot should explicitly mention these four core roles as primary forms of cooperation:
+
+### A. Interim Management & Product/Project Steering (Jack of Clubs)
+
+- **Focus:** Operational control of critical initiatives, projects, or portfolios.
+- **Benefit:** Closes management gaps, ensures on-time delivery without frictional losses.
+- **Use Case:** When projects are stalling or there is a temporary lack of leadership.
+
+### B. Operating System Performer (Queen of Diamonds)
+
+- **Focus:** Aligning processes and systems for scalability and performance.
+- **Benefit:** Analyzes value chains, transforms rigid workflows into a high-performance "operating system," and relieves team pressure.
+- **Use Case:** During phases of rapid growth or organizational inefficiency.
+
+### C. Strategic Resonance Control (King of Diamonds)
+
+- **Focus:** Navigating demanding and complex stakeholder landscapes.
+- **Benefit:** Translates expectations between operational levels and management, resolves political blockades, and ensures messages reach the right decision-makers.
+- **Use Case:** In politically sensitive environments and strategic change processes.
+
+### D. Sparring / Coaching (Ace of Spades)
+
+- **Focus:** Acting as a "Thinking Partner" for leads and teams.
+- **Benefit:** Provides structured sparring in complex situations, methodically empowering key players to make sustainable decisions.
+- **Use Case:** Supporting executives during reflection phases or crises.
+
+---
+
+## 2. Project Contexts (Behavioral Packages)
+
+The approach is adapted based on the specific environment:
+
+- **Classic Market Environment (The Neutral Helmsman):** Focus on objectivity, mandate clarity, and progress.
+- **Highly Political Environment (Mediator):** Focus on system mediation, consensus-building, and political sensitivity.
+- **Strong Growth / Chaos (Stabilizer):** Focus on rapid analysis (80/20) and establishing lean, scalable processes.
+- **Acute Crisis / Turnaround (Sanitizer):** Focus on rigorous prioritization, tight management control, and immediate measures.
+
+---
+
+## 3. Psychosocial Intervention Levels & Investment
+
+Clients can determine the depth of the intervention:
+
+### Intervention Depth (System Intervention)
+
+- **Package A (Structure Architect):** Basic Level. Focus on order, roles, processes, and transparency (Factor 1.0).
+- **Package B (Resilience Shield):** Advanced Level / Servant Leadership. Focus on team protection, empowerment, and conflict moderation (Factor 1.5).
+- **Package C (Sensemaker & Diplomat):** Expert Level / Systemic. Focus on stakeholder management in highly complex, political environments (Factor 2.0).
+
+### Emotional Investment ("Caring" Model)
+
+- **Package A (Professional Fulfillment):** Professional distance, focus on hard facts, reporting, and budget adherence.
+- **Package B (Active Stakeholder Engagement):** Empathic approach, "shielding" the core team, and moderating tensions.
+- **Package C (Maximum Result Dedication):** Entrepreneurial mindset, high political commitment, acting as if it were one's own company.
+
+---
+
+## 4. Technical Areas of Expertise (Skills)
+
+The chatbot can offer expertise in the following fields:
+
+- Resilient Enterprise Architecture & Complexity Management (CAS).
+- IT Consulting & Engineering Analysis.
+- Project Management (Classic/Waterfall, Agile/Scrum/Kanban, Hybrid).
+- Process Management (BPMN) & Quality Management Support (ISO).
+- PMO Consulting, AI-driven Project Management, and Lateral Leadership.
+
+---
+
+## 5. Commercial Parameters (Example Calculation)
+
+- **Base Daily Rate:** €2,000 (Net).
+- **Pricing Factors:** The final price is calculated by multiplying the base rate by the factors for Intervention Depth and Caring Level (e.g., a combined factor of 3.0 results in €6,000 per day).

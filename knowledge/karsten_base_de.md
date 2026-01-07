@@ -180,3 +180,83 @@ Karsten Zenk verfolgt einen interdisziplinären Ansatz, der tief in der Systemth
 - **Fokus:** Integration östlicher und westlicher Philosophien zur mentalen Stabilität.
 - **Vordenker:** Alan Watts, Eckhart Tolle.
 - **Anwendung:** Bewahrung von Ruhe und Übersicht (Mindfulness) auch in Hochdruckphasen von Programmen und Portfolios. Ziel ist die Transformation von operativem Stress (Suffer) in konstruktive Wertschöpfung und Freude (Joy).
+
+# Wissensdatenbank: Kooperationsmöglichkeiten & Leistungsangebot
+
+Dieses Dokument beschreibt die spezifischen Rollen, Kontexte und Interventionslevel für eine Zusammenarbeit mit potenziellen Kunden.
+
+## 1. Verfügbare Rollen (Personas)
+
+Der Chatbot sollte diese vier Kernrollen explizit als Kooperationsformen erwähnen:
+
+### A. Interim Management & Produkt-/Projektsteuerung (Bube-Kartensymbol)
+
+- **Fokus:** Operative Steuerung von kritischen Initiativen, Projekten oder Portfolios.
+- **Nutzen:** Schließt Vakanzen, sorgt für pünktliche Lieferung ohne Reibungsverluste.
+- **Einsatz:** Wenn Projekte ins Stocken geraten oder Führungskräfte fehlen.
+
+### B. Betriebssystem Performer (Dame-Kartensymbol)
+
+- **Fokus:** Ausrichtung von Prozessen und Systemen auf Skalierbarkeit.
+- **Nutzen:** Analysiert Wertschöpfungsketten, transformiert starre Abläufe in ein leistungsfähiges "Betriebssystem", entlastet Teams.
+- **Einsatz:** Bei schnellem Wachstum oder Ineffizienz in der Organisation.
+
+### C. Strategische Resonanz-Steuerung (König-Kartensymbol)
+
+- **Fokus:** Navigation in anspruchsvollen Stakeholder-Landschaften.
+- **Nutzen:** Übersetzt Erwartungen zwischen Fachebene und Management, löst politische Blockaden, stellt sicher, dass Botschaften bei Entscheidern ankommen.
+- **Einsatz:** In politisch komplexen Umfeldern und strategischen Change-Prozessen.
+
+### D. Sparring / Coaching (Ass-Kartensymbol)
+
+- **Fokus:** "Thinking Partner" für Leads und Teams.
+- **Nutzen:** Strukturiertes Sparring in komplexen Lagen, befähigt Schlüsselspieler methodisch zu tragfähigen Entscheidungen.
+- **Einsatz:** Zur Unterstützung von Führungskräften in Reflexionsphasen oder Krisen.
+
+---
+
+## 2. Projekt-Kontexte (Verhaltenspakete)
+
+Je nach Umfeld wird die Arbeitsweise angepasst:
+
+- **Klassisches Umfeld (Der Neutrale Steuermann):** Fokus auf Objektivität, Mandatsklarheit und Fortschritt.
+- **Hoch-politisches Umfeld (Mediator):** Fokus auf System-Mediation, Konsens-Förderung und politische Sensitivität.
+- **Starkes Wachstum / Chaos (Stabilisator):** Fokus auf schnelle Analyse (80/20) und Etablierung schlanker Prozesse.
+- **Akute Krise / Turnaround (Sanierer):** Fokus auf konsequente Priorisierung, engmaschige Steuerung und Sofort-Maßnahmen.
+
+---
+
+## 3. Psychosoziale Interventions-Level & Investment
+
+Kunden können die Tiefe der Zusammenarbeit bestimmen:
+
+### Interventions-Tiefe (System-Eingriff)
+
+- **Paket A (Struktur-Architekt):** Basis-Level. Fokus auf Ordnung, Rollen, Prozesse und Transparenz (Faktor 1.0).
+- **Paket B (Resilienz-Schild):** Advanced-Level. Fokus auf Teamschutz, Befähigung und Konfliktmoderation (Faktor 1.5).
+- **Paket C (Sensemaker & Diplomat):** Expert-Level. Fokus auf Stakeholder-Management in hochkomplexen, politischen Umfeldern (Faktor 2.0).
+
+### Emotionales Investment (Caring-Modell)
+
+- **Paket A (Auftragserfüllung):** Professionelle Distanz, Fokus auf harte Fakten und Reporting.
+- **Paket B (Aktives Stakeholder-Engagement):** Empathisch, schirmt das Team ab ("Shielding"), moderiert Spannungen.
+- **Paket C (Maximale Ergebnis-Dedikation):** Unternehmerisches Denken, hohe politische Vorleistung, agiert als Teil des Unternehmens des Kunden.
+
+---
+
+## 4. Fachliche Schwerpunkte (Skills)
+
+Der Chatbot kann folgende Fachkompetenzen anbieten:
+
+- Resiliente Unternehmensarchitektur & Komplexitätsmanagement.
+- IT-Beratung & Engineering-Analyse.
+- Projektmanagement (Klassisch/Wasserfall, Agil/Scrum/Kanban, Hybrid).
+- Prozessmanagement (BPMN) & Qualitätsmanagement (ISO).
+- PMO-Consulting, KI-Projektmanagement & Team-Koordination.
+
+---
+
+## 5. Kaufmännische Eckpunkte (Beispielrechnung)
+
+- **Basis-Tagessatz:** 2.000 € (Netto).
+- **Preisfaktoren:** Der Endpreis berechnet sich aus dem Basis-Satz multipliziert mit den Faktoren für Interventions-Tiefe und Caring-Level (z.B. Faktor 3.0 bei hoher Komplexität = 6.000 €/Tag).
