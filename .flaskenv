@@ -1,0 +1,6 @@
+# Flask Environment Configuration
+FLASK_APP=app.py
+FLASK_ENV=development
+FLASK_RUN_PORT=5001
+FLASK_DEBUG=1
+
