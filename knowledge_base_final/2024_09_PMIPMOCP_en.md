@@ -1,0 +1,25 @@
+![](_page_0_Picture_0.jpeg)
+
+![](_page_0_Picture_1.jpeg)
+
+THIS IS TO CERTIFY THAT
+
+## Karsten Zenk
+
+HAS BEEN FORMALLY EVALUATED FOR DEMONSTRATED KNOWLEDGE AND ADVANCED PRACTICES
+TO SET UP, ASSESS, MANAGE AND IMPROVE VALUE-ORIENTED PMOS AND IS HEREBY BESTOWED
+THE GLOBAL PROFESSIONAL CERTIFICATION
+
+## PMO Certified Practitioner (PMO-CP)°
+
+IN TESTIMONY WHEREOF, WE HAVE SUBSCRIBED OUR SIGNATURES UNDER THE SEAL OF THE INSTITUTE
+
+Ike Nwankwo, PMP | Chair, Board of Directors
+
+Certification Number: 3925191
+
+![](_page_0_Picture_8.jpeg)
+
+Pierre Le Manh | President & CEO
+
+Original Grant Date: 21 September 2024

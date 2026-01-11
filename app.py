@@ -1,4 +1,5 @@
 import os
+import glob
 from flask import (
     Flask,
     render_template,
@@ -11,7 +12,8 @@ from flask import (
 )
 from dotenv import load_dotenv
 from google import genai
-from datetime import datetime  # NEU: Für die Zeitberechnung
+from datetime import datetime
+from langdetect import detect, LangDetectException
 
 # 1. KONFIGURATION & INITIALISIERUNG
 load_dotenv()
@@ -32,14 +34,66 @@ def inject_language():
     return dict(lang=g.lang)
 
 
-# 3. HILFSFUNKTION KNOWLEDGE BASE
-def load_karsten_knowledge(lang):
+# 3. HILFSFUNKTIONEN
+
+def detect_language(text):
+    """
+    Erkennt automatisch die Sprache einer Benutzernachricht.
+    Gibt 'de' oder 'en' zurück, Fallback auf 'de'.
+    """
     try:
-        filename = f"knowledge/karsten_base_{lang}.md"
-        with open(filename, "r", encoding="utf-8") as file:
-            return file.read()
-    except FileNotFoundError:
-        return "Knowledge base not found."
+        detected = detect(text)
+        # Unterstützte Sprachen
+        if detected == 'de':
+            return 'de'
+        elif detected in ['en', 'nl', 'da', 'no', 'sv']:  # Englisch und verwandte
+            return 'en'
+        else:
+            # Für alle anderen Sprachen: Standard Deutsch
+            return 'de'
+    except LangDetectException:
+        # Bei sehr kurzen Texten oder Fehlern: Fallback auf Deutsch
+        return 'de'
+
+
+def load_karsten_knowledge(lang):
+    """
+    Lädt alle Markdown-Dateien aus knowledge_base_final für die gewählte Sprache.
+    Kombiniert sie zu einem großen Kontext für den Chatbot.
+    """
+    try:
+        # Lade alle Dateien für die gewählte Sprache
+        pattern = f"knowledge_base_final/*_{lang}.md"
+        files = sorted(glob.glob(pattern))
+        
+        if not files:
+            # Fallback auf alte Dateien, falls knowledge_base_final leer ist
+            filename = f"knowledge/karsten_base_{lang}.md"
+            with open(filename, "r", encoding="utf-8") as file:
+                return file.read()
+        
+        # Kombiniere alle Dateien
+        combined_content = []
+        combined_content.append(f"# Karsten Zenk - Vollständige Wissensdatenbank ({lang.upper()})\n")
+        combined_content.append(f"Generiert aus {len(files)} Dokumenten\n\n")
+        
+        for filepath in files:
+            filename = os.path.basename(filepath)
+            doc_name = filename.replace(f"_{lang}.md", "")
+            
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = f.read().strip()
+                
+            if content:  # Nur nicht-leere Dateien hinzufügen
+                combined_content.append(f"\n## Dokument: {doc_name}\n")
+                combined_content.append(content)
+                combined_content.append("\n---\n")
+        
+        return "\n".join(combined_content)
+        
+    except Exception as e:
+        print(f"Fehler beim Laden der Knowledge Base: {e}")
+        return "Knowledge base could not be loaded."
 
 
 # 4. HAUPTROUTEN (Navigation)
@@ -48,36 +102,75 @@ def index():
     return render_template("index.html")
 
 
-# 5. CHATBOT-ROUTE (Gemini 2.0 Flash - Optimiert für Ihr bezahltes Konto)
-@app.route("/ask", methods=["POST"])
+# 5. CHATBOT-ROUTE (Gemini 2.0 Flash mit intelligenter Spracherkennung)
 @app.route("/ask", methods=["POST"])
 def ask_gemini():
     data = request.get_json()
     user_message = data.get("message")
-    lang = data.get("lang", g.lang)
-
+    frontend_lang = data.get("lang", g.lang)  # Sprache aus dem Frontend
+    
+    # 🎯 INTELLIGENTE SPRACHERKENNUNG
+    # Erkenne die Sprache der Benutzernachricht automatisch
+    detected_lang = detect_language(user_message)
+    
+    # Verwende die erkannte Sprache (nicht die Frontend-Sprache!)
+    lang = detected_lang
+    
     # NEU: Aktuelles Datum formatieren
     today = datetime.now().strftime("%d. %B %Y")
-
+    
+    # Lade die Knowledge Base in der erkannten Sprache
     kb_content = load_karsten_knowledge(lang)
-
+    
+    # Sprachanweisung sehr explizit machen
+    if lang == 'de':
+        language_instruction = """
+        WICHTIG: Du musst AUSSCHLIESSLICH auf DEUTSCH antworten!
+        - Benutze keine englischen Wörter
+        - Alle Sätze müssen auf Deutsch sein
+        - Die Antwort muss zu 100% in deutscher Sprache verfasst sein
+        """
+        response_language = "Deutsch"
+    else:
+        language_instruction = """
+        IMPORTANT: You MUST respond EXCLUSIVELY in ENGLISH!
+        - Do not use any German words
+        - All sentences must be in English
+        - The response must be 100% in English language
+        """
+        response_language = "English"
+    
     try:
+        # Erstelle einen modifizierten User-Prompt mit Sprachanweisung
+        enhanced_message = f"""[Answer in {response_language}] {user_message}"""
+        
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             config={
                 "system_instruction": (
+                    f"{language_instruction}\n\n"
                     f"Du bist der KI-Assistent von Karsten Zenk. Heute ist der {today}. "
-                    f"Antworte strikt in der Sprache: {'Deutsch' if lang == 'de' else 'Englisch'}. "
                     f"Nutze dieses Wissen: {kb_content}. "
                     "Du darfst logische Berechnungen (wie das aktuelle Alter) basierend auf dem heutigen Datum durchführen. "
-                    "Falls Informationen fehlen, verweise auf Karsten Zenk persönlich."
+                    "Falls Informationen fehlen, verweise auf Karsten Zenk persönlich. "
+                    f"\n\nNOCHMALS: Deine GESAMTE Antwort muss auf {response_language} sein!"
                 )
             },
-            contents=user_message,
+            contents=enhanced_message,
         )
-        return jsonify({"reply": response.text})
+        
+        # Gib auch die erkannte Sprache zurück (für Debugging/Feedback)
+        return jsonify({
+            "reply": response.text,
+            "detected_language": lang,
+            "frontend_language": frontend_lang
+        })
+        
     except Exception as e:
-        return jsonify({"reply": f"API-Fehler: {str(e)}"}), 500
+        return jsonify({
+            "reply": f"API-Fehler: {str(e)}",
+            "detected_language": lang
+        }), 500
 
 
 # 6. AKKORDEON-LOGIK (Ihre Referenz - Repariert)
