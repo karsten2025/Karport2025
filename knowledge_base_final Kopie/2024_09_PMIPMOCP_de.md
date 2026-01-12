@@ -1,0 +1,25 @@
+![](_page_0_Picture_0.jpeg)
+
+![](_page_0_Picture_1.jpeg)
+
+HIERMIT WIRD BESTÄTIGT, DASS
+
+## Karsten Zenk
+
+FORMELL AUF NACHGEWIESENES WISSEN UND FORTGESCHRITTENE PRAKTIKEN BEWERTET WURDE,
+UM WERTORIENTIERTE PMOs EINZURICHTEN, ZU BEWERTEN, ZU STEUERN UND ZU VERBESSERN,
+UND IHM/HIERMIT DIE GLOBALE PROFESSIONELLE ZERTIFIZIERUNG VERLIEHEN WIRD
+
+## PMO Certified Practitioner (PMO-CP)°
+
+ZU URKUNDEN DESSEN HABEN WIR UNSERE UNTERSCHRIFTEN UNTER DEM SIEGEL DES INSTITUTS GELEISTET
+
+Ike Nwankwo, PMP | Vorsitzender, Vorstand der Direktoren
+
+Zertifizierungsnummer: 3925191
+
+![](_page_0_Picture_8.jpeg)
+
+Pierre Le Manh | Präsident & CEO
+
+Datum der ursprünglichen Verleihung: 21. September 2024

@@ -182,3 +182,4 @@ fetch('/ask', {
 **Autor:** AI Assistant  
 **Version:** 1.0
 
+

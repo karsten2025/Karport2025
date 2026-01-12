@@ -32,3 +32,4 @@ Karsten Zenk verfolgt einen interdisziplinären Ansatz, der tief in der Systemth
 - **Vordenker:** Alan Watts, Eckhart Tolle.
 - **Anwendung:** Bewahrung von Ruhe und Übersicht (Mindfulness) auch in Hochdruckphasen von Programmen und Portfolios. Ziel ist die Transformation von operativem Stress (Suffer) in konstruktive Wertschöpfung und Freude (Joy).
 
+
