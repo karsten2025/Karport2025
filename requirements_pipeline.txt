@@ -1,0 +1,19 @@
+# Pipeline Requirements für Knowledge Base Updates
+# Nur für Dokument-Verarbeitung, NICHT für Flask-Deployment
+
+# OpenAI GPT-5.2 für Übersetzungen
+openai
+
+# Marker-PDF für PDF/Bild-zu-Markdown Konvertierung
+marker-pdf
+
+# Python-DOCX für Word-Dokument-Verarbeitung
+python-docx
+
+# DOCX-zu-PDF Konverter (benötigt von marker-pdf)
+weasyprint
+mammoth
+
+# Utilities
+python-dotenv
+psutil
