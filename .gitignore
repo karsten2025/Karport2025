@@ -34,7 +34,16 @@ venv.bak
 # Sensible Konfigurationsdateien
 # Wichtig, um z.B. API-Schlüssel geheim zu halten.
 *.env
-config.ini.DS_Store
+config.ini
+.DS_Store
 static/.DS_Store
 templates/.DS_Store
 .env
+
+# Pipeline-spezifische Ordner (lokal, nicht für Git)
+.venv_pipeline/
+inputs/
+inputs_out/
+
+# Temporäre Knowledge Base Backups
+knowledge_base_final Kopie/
