@@ -122,41 +122,54 @@ def ask_gemini():
     # Lade die Knowledge Base in der erkannten Sprache
     kb_content = load_karsten_knowledge(lang)
     
-    # Sprachanweisung sehr explizit machen
+    # ULTRA-EXPLIZITE Sprachanweisung mit mehrfacher Betonung
     if lang == 'de':
-        language_instruction = """
-        WICHTIG: Du musst AUSSCHLIESSLICH auf DEUTSCH antworten!
-        - Benutze keine englischen Wörter
-        - Alle Sätze müssen auf Deutsch sein
-        - Die Antwort muss zu 100% in deutscher Sprache verfasst sein
-        """
-        response_language = "Deutsch"
+        system_prompt = f"""Du bist Karstens KI-Assistent. Heute ist der {today}.
+
+SPRACHE: Du MUSST in DEUTSCHER Sprache antworten!
+- Jedes Wort muss auf Deutsch sein
+- Keine englischen Begriffe verwenden
+- 100% deutschsprachige Antwort
+
+Wissensgrundlage:
+{kb_content}
+
+Regeln:
+- Berechne das Alter basierend auf dem heutigen Datum
+- Bei fehlenden Infos: Verweise auf Karsten Zenk persönlich
+- WICHTIG: Antworte NUR auf Deutsch!"""
+
+        user_prompt = f"""DEUTSCH: {user_message}
+
+Antworte ausschließlich auf Deutsch!"""
+        
     else:
-        language_instruction = """
-        IMPORTANT: You MUST respond EXCLUSIVELY in ENGLISH!
-        - Do not use any German words
-        - All sentences must be in English
-        - The response must be 100% in English language
-        """
-        response_language = "English"
+        system_prompt = f"""You are Karsten's AI assistant. Today is {today}.
+
+LANGUAGE: You MUST respond in ENGLISH!
+- Every word must be in English
+- Do not use any German terms
+- 100% English language response
+
+Knowledge base:
+{kb_content}
+
+Rules:
+- Calculate age based on today's date
+- If info is missing: Refer to Karsten Zenk personally
+- IMPORTANT: Respond ONLY in English!"""
+
+        user_prompt = f"""ENGLISH: {user_message}
+
+Respond exclusively in English!"""
     
     try:
-        # Erstelle einen modifizierten User-Prompt mit Sprachanweisung
-        enhanced_message = f"""[Answer in {response_language}] {user_message}"""
-        
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             config={
-                "system_instruction": (
-                    f"{language_instruction}\n\n"
-                    f"Du bist der KI-Assistent von Karsten Zenk. Heute ist der {today}. "
-                    f"Nutze dieses Wissen: {kb_content}. "
-                    "Du darfst logische Berechnungen (wie das aktuelle Alter) basierend auf dem heutigen Datum durchführen. "
-                    "Falls Informationen fehlen, verweise auf Karsten Zenk persönlich. "
-                    f"\n\nNOCHMALS: Deine GESAMTE Antwort muss auf {response_language} sein!"
-                )
+                "system_instruction": system_prompt
             },
-            contents=enhanced_message,
+            contents=user_prompt,
         )
         
         # Gib auch die erkannte Sprache zurück (für Debugging/Feedback)
