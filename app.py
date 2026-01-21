@@ -25,11 +25,7 @@ app = Flask(__name__)
 
 # 2. SPRACH-LOGIK (Ihre Referenz)
 @app.before_request
-def set_language():
-    """
-    Initialisiert g.lang für jeden Request.
-    Fallback: de (domain-unabhängig)
-    """
+def detect_language():
     g.lang = request.args.get("lang", "de")
 
 
@@ -70,12 +66,9 @@ def load_karsten_knowledge(lang):
         pattern = f"knowledge_base_final/*_{lang}.md"
         files = sorted(glob.glob(pattern))
         
-        print(f"DEBUG KB: Lang={lang}, Pattern={pattern}, Files found={len(files)}")
-        
         if not files:
             # Fallback auf alte Dateien, falls knowledge_base_final leer ist
             filename = f"knowledge/karsten_base_{lang}.md"
-            print(f"DEBUG KB: Fallback zu {filename}")
             with open(filename, "r", encoding="utf-8") as file:
                 return file.read()
         
@@ -96,9 +89,7 @@ def load_karsten_knowledge(lang):
                 combined_content.append(content)
                 combined_content.append("\n---\n")
         
-        result = "\n".join(combined_content)
-        print(f"DEBUG KB: Combined {len(files)} files, total length={len(result)} chars")
-        return result
+        return "\n".join(combined_content)
         
     except Exception as e:
         print(f"Fehler beim Laden der Knowledge Base: {e}")
@@ -116,19 +107,11 @@ def index():
 def ask_gemini():
     data = request.get_json()
     user_message = data.get("message")
-    
-    # Session-unabhängige Sprachermittlung: Primär aus JSON-Body
-    frontend_lang = data.get("lang", "de")  # Fallback auf "de" statt g.lang
-    
-    # DEBUG LOGGING für Domain-Vergleich
-    print(f"DEBUG REQUEST: Host={request.host}, Origin={request.headers.get('Origin', 'N/A')}")
-    print(f"DEBUG REQUEST: Accept-Language={request.headers.get('Accept-Language', 'N/A')}")
-    print(f"DEBUG REQUEST: Frontend-Lang={frontend_lang}, Message='{user_message[:50]}...'")
+    frontend_lang = data.get("lang", g.lang)  # Sprache aus dem Frontend
     
     # 🎯 INTELLIGENTE SPRACHERKENNUNG
     # Erkenne die Sprache der Benutzernachricht automatisch
     detected_lang = detect_language(user_message)
-    print(f"DEBUG DETECTION: Detected={detected_lang}, Frontend={frontend_lang}")
     
     # Verwende die erkannte Sprache (nicht die Frontend-Sprache!)
     lang = detected_lang
@@ -181,8 +164,6 @@ Rules:
 Respond exclusively in English!"""
     
     try:
-        print(f"DEBUG PROMPT: Lang={lang}, System prompt length={len(system_prompt)}, KB length={len(kb_content)}")
-        
         response = client.models.generate_content(
             model="gemini-2.0-flash",
             config={
@@ -191,18 +172,14 @@ Respond exclusively in English!"""
             contents=user_prompt,
         )
         
-        reply_text = response.text
-        print(f"DEBUG RESPONSE: Reply length={len(reply_text)}, First 100 chars: {reply_text[:100]}")
-        
         # Gib auch die erkannte Sprache zurück (für Debugging/Feedback)
         return jsonify({
-            "reply": reply_text,
+            "reply": response.text,
             "detected_language": lang,
             "frontend_language": frontend_lang
         })
         
     except Exception as e:
-        print(f"ERROR: Gemini API failed: {str(e)}")
         return jsonify({
             "reply": f"API-Fehler: {str(e)}",
             "detected_language": lang
