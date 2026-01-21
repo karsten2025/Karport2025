@@ -23,9 +23,10 @@ CLIENT_PORTAL = "https://client-portal-4wir.onrender.com"
 app = Flask(__name__)
 
 
-# 2. SPRACH-LOGIK (Ihre Referenz)
+# 2. SPRACH-LOGIK
 @app.before_request
-def detect_language():
+def set_global_lang():
+    """Setzt g.lang aus URL-Parameter für Template-Rendering"""
     g.lang = request.args.get("lang", "de")
 
 
