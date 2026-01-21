@@ -39,20 +39,43 @@ def inject_language():
 def detect_language(text):
     """
     Erkennt automatisch die Sprache einer Benutzernachricht.
+    Verwendet Keyword-Matching für Zuverlässigkeit bei kurzen Texten.
     Gibt 'de' oder 'en' zurück, Fallback auf 'de'.
     """
+    text_lower = text.lower()
+    
+    # Englische Keywords (häufige Fragewörter und Verben)
+    en_keywords = ['how', 'what', 'when', 'where', 'who', 'why', 'which', 
+                   'can', 'could', 'would', 'should', 'do', 'does', 'did',
+                   'is', 'are', 'was', 'were', 'have', 'has', 'had',
+                   'tell', 'show', 'explain', 'describe', 'his', 'her', 'their']
+    
+    # Deutsche Keywords (häufige Fragewörter und Verben)
+    de_keywords = ['wie', 'was', 'wann', 'wo', 'wer', 'warum', 'welche', 'welcher', 'welches',
+                   'kannst', 'könntest', 'würdest', 'solltest', 'bist', 'sind', 'war', 'waren',
+                   'hast', 'hat', 'hatte', 'hatten', 'sage', 'zeige', 'erkläre', 'beschreibe',
+                   'sein', 'seine', 'ihrer', 'seinem']
+    
+    # Zähle Keyword-Treffer
+    en_count = sum(1 for keyword in en_keywords if f' {keyword} ' in f' {text_lower} ' or text_lower.startswith(keyword + ' '))
+    de_count = sum(1 for keyword in de_keywords if f' {keyword} ' in f' {text_lower} ' or text_lower.startswith(keyword + ' '))
+    
+    # Wenn Keyword-Matching eindeutig ist
+    if en_count > de_count:
+        return 'en'
+    elif de_count > en_count:
+        return 'de'
+    
+    # Fallback: langdetect
     try:
         detected = detect(text)
-        # Unterstützte Sprachen
         if detected == 'de':
             return 'de'
-        elif detected in ['en', 'nl', 'da', 'no', 'sv']:  # Englisch und verwandte
+        elif detected in ['en', 'nl', 'da', 'no', 'sv', 'af']:  # Englisch und verwandte
             return 'en'
         else:
-            # Für alle anderen Sprachen: Standard Deutsch
             return 'de'
     except LangDetectException:
-        # Bei sehr kurzen Texten oder Fehlern: Fallback auf Deutsch
         return 'de'
 
 
