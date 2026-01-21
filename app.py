@@ -25,7 +25,7 @@ app = Flask(__name__)
 
 # 2. SPRACH-LOGIK (Ihre Referenz)
 @app.before_request
-def set_global_language():
+def detect_language():
     g.lang = request.args.get("lang", "de")
 
 
@@ -107,7 +107,7 @@ def index():
 def ask_gemini():
     data = request.get_json()
     user_message = data.get("message")
-    frontend_lang = data.get("lang", "de")  # Sprache aus dem Frontend (Fallback: de)
+    frontend_lang = data.get("lang", g.lang)  # Sprache aus dem Frontend
     
     # 🎯 INTELLIGENTE SPRACHERKENNUNG
     # Erkenne die Sprache der Benutzernachricht automatisch
