@@ -206,18 +206,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const BALLOON_CONFIGS = [
     {
+      id: "next-step-right",
+      xPercent: 60, // rechts von der Mitte
+      riseDurationSeconds: 19,
+      scaleStart: 0.5,
+      scaleEnd: 3.2,
+      theme: "gray",
+      delayMs: 0, // ✨ PMO-Setup erscheint ZUERST
+      label: {
+        de: "PMO-Setup",
+        en: "PMO setup",
+      },
+      text: {
+        de: {
+          title: "Ein PMO, das den Laden zusammenhält",
+          body: "Integration von strategischer Vision, taktischer Umsetzung und operativer Exzellenz: Das PMI-OPM-Modell und die PMI-PMOCP-Zertifizierung – ein duales Framework für den Erfolg von PMOs, das messbare Ergebnisse liefert, die organisatorische Agilität stärkt und den langfristigen Wert von Produkten, Portfolios, Programmen und Projekten maximiert.<br><br><a href='https://pmo-value-generator-8aqm.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Mehr erfahren</a>",
+        },
+        en: {
+          title: "A PMO That Holds Things Together",
+          body: "Integrating Strategic Vision, Tactical Execution, and Operational Excellence: The PMI OPM Model and PMI-PMOCP Certification—A Dual Framework for PMO Success that drives measurable results, enhances organizational agility, and maximizes the long-term value of products, portfolios, programs, and projects.<br><br><a href='https://pmo-value-generator-8aqm.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Learn more</a>",
+        },
+      },
+    },
+    {
       id: "cpmai",
       xPercent: 48,
       riseDurationSeconds: 18,
       scaleStart: 0.55,
       scaleEnd: 3.2,
       theme: "cpmai", // verwendet das Standard-Gradient-Theme
-      delayMs: 0,
+      delayMs: 3500, // 3,5s nach PMO-Setup
       label: {
         de: "CPMAI",
         en: "CPMAI",
       },
-      // kein auto-close: Dialog bleibt, bis "Schließen" geklickt wird
       text: {
         de: {
           title: "CPMAI in der Praxis",
@@ -236,13 +258,11 @@ document.addEventListener("DOMContentLoaded", function () {
       scaleStart: 0.5,
       scaleEnd: 3.4,
       theme: "secondary", // nutzt das alternative Theme aus CSS
-      delayMs: 3500,
+      delayMs: 7000, // 7s nach PMO-Setup
       label: {
         de: "KI-Explorer",
         en: "AI Explorer",
       },
-      // Beispiel: Dialog nach 15s automatisch schließen (optional)
-      // dismissAfterMs: 15000,
       text: {
         de: {
           title: "Wo endet Ihre Suche?",
@@ -255,40 +275,13 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     },
     {
-      id: "next-step-right",
-      xPercent: 60, // rechts von der Mitte
-      riseDurationSeconds: 19,
-      scaleStart: 0.5,
-      scaleEnd: 3.2,
-      theme: "gray",
-      delayMs: 7000,
-      label: {
-        de: "PMO-Setup",
-        en: "PMO setup",
-      },
-      // optional: Dialog nach X ms automatisch schließen
-      // dismissAfterMs: 12000,
-      text: {
-        de: {
-          title: "Ein PMO, das den Laden zusammenhält",
-          // Hier habe ich den Link-Tag wieder vollständig eingefügt
-          body: "Integration von strategischer Vision, taktischer Umsetzung und operativer Exzellenz: Das PMI-OPM-Modell und die PMI-PMOCP-Zertifizierung – ein duales Framework für den Erfolg von PMOs, das messbare Ergebnisse liefert, die organisatorische Agilität stärkt und den langfristigen Wert von Produkten, Portfolios, Programmen und Projekten maximiert.<br><br><a href='https://pmo-value-generator-8aqm.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Mehr erfahren</a>",
-        },
-        en: {
-          title: "A PMO That Holds Things Together",
-          // Auch hier für Englisch ergänzt
-          body: "Integrating Strategic Vision, Tactical Execution, and Operational Excellence: The PMI OPM Model and PMI-PMOCP Certification—A Dual Framework for PMO Success that drives measurable results, enhances organizational agility, and maximizes the long-term value of products, portfolios, programs, and projects.<br><br><a href='https://pmo-value-generator-8aqm.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Learn more</a>",
-        },
-      },
-    },
-    {
       id: "donate",
       xPercent: 72,
       riseDurationSeconds: 22,
       scaleStart: 0.5,
       scaleEnd: 3.0,
       theme: "green", // wichtig für die CSS-Regeln
-      delayMs: 9000,
+      delayMs: 10500, // 10,5s nach PMO-Setup
       href: "/donate", // Klick führt zur Spendenseite (mit ?lang=…)
       text: {}, // aktuell kein Dialogtext nötig
     },
