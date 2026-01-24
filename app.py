@@ -92,9 +92,9 @@ def load_karsten_knowledge(lang):
         
         if not files:
             # Fallback auf alte Dateien, falls knowledge_base_final leer ist
-            filename = f"knowledge/karsten_base_{lang}.md"
-            with open(filename, "r", encoding="utf-8") as file:
-                return file.read()
+        filename = f"knowledge/karsten_base_{lang}.md"
+        with open(filename, "r", encoding="utf-8") as file:
+            return file.read()
         
         # Kombiniere alle Dateien
         combined_content = []
@@ -139,10 +139,10 @@ def ask_gemini():
     
     # Verwende die erkannte Sprache (nicht die Frontend-Sprache!)
     lang = detected_lang
-    
+
     # NEU: Aktuelles Datum formatieren
     today = datetime.now().strftime("%d. %B %Y")
-    
+
     # Lade die Knowledge Base in der erkannten Sprache
     kb_content = load_karsten_knowledge(lang)
     
@@ -186,7 +186,7 @@ Rules:
         user_prompt = f"""ENGLISH: {user_message}
 
 Respond exclusively in English!"""
-    
+
     try:
         response = client.models.generate_content(
             model="gemini-2.0-flash",
