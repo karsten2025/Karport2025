@@ -92,9 +92,9 @@ def load_karsten_knowledge(lang):
         
         if not files:
             # Fallback auf alte Dateien, falls knowledge_base_final leer ist
-        filename = f"knowledge/karsten_base_{lang}.md"
-        with open(filename, "r", encoding="utf-8") as file:
-            return file.read()
+            filename = f"knowledge/karsten_base_{lang}.md"
+            with open(filename, "r", encoding="utf-8") as file:
+                return file.read()
         
         # Kombiniere alle Dateien
         combined_content = []
