@@ -41,64 +41,11 @@
     <main id="preview" aria-label="Dankesseite">
       <div id="preview-content">
         <div class="project-card" style="max-width: 640px; margin-top: 2rem">
-          <h2>
-            {% if lang == 'de' %} Vielen Dank für Ihre Unterstützung {% else %}
-            Thank you for your support {% endif %}
-          </h2>
-
           {% if lang == 'de' %}
-          <p>
-            Herzlichen Dank, dass Sie meine unabhängige Arbeit unterstützen.
-            Damit ermöglichen Sie mir, weiterhin Zeit in fundierte Inhalte,
-            strukturierende Denkmodelle und praxistaugliche Werkzeuge zu
-            investieren – statt in kurzfristige „Buzzword-Projekte“.
-          </p>
-          <p>
-            Ihre Unterstützung fließt direkt in die Weiterentwicklung von
-            Materialien, Visualisierungen und Formaten, die Organisationen,
-            Teams und Projekten helfen, klarer zu sehen und besser zu
-            entscheiden.
-          </p>
+            {% include 'partials/donate_thanks.de.html' %}
           {% else %}
-          <p>
-            Thank you very much for supporting my independent work. Your
-            contribution enables me to keep investing time into solid content,
-            structuring thinking models and practical tools – instead of chasing
-            short-lived buzzword projects.
-          </p>
-          <p>
-            Your support goes directly into further developing materials,
-            visualisations and formats that help organisations, teams and
-            projects see more clearly and make better decisions.
-          </p>
+            {% include 'partials/donate_thanks.en.html' %}
           {% endif %}
-
-          <hr class="soft-divider" />
-
-          <p style="font-size: 0.9rem; color: #666">
-            {% if lang == 'de' %} Wenn Sie mögen, können Sie von hier aus zurück
-            zur Startseite oder direkt in das Client-Portal springen. {% else %}
-            If you like, you can go back to the main page or directly to the
-            client portal from here. {% endif %}
-          </p>
-
-          <div
-            style="
-              display: flex;
-              flex-wrap: wrap;
-              gap: 0.75rem;
-              margin-top: 0.75rem;
-            "
-          >
-            <a class="cta-btn" href="{{ url_for('index') }}?lang={{ lang }}">
-              {% if lang == 'de' %}Zur Startseite{% else %}Back to home{% endif
-              %}
-            </a>
-            <a class="cta-btn" href="/explore?lang={{ lang }}">
-              {% if lang == 'de' %} Direkt ins Client-Portal {% else %} Go to
-              client portal {% endif %}
-            </a>
-          </div>
         </div>
       </div>
     </main>
