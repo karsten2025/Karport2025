@@ -1,12 +1,15 @@
 <!-- 🌀 TORUS LAUNCHER: Die rollende "Symbiotic Value Engine" -->
 <div id="torus-launcher-container">
   <div id="torus-launcher" class="torus-orb" aria-label="Open Chat with Value Engine">
-    <img 
-      src="{{ url_for('static', filename='images/roll-torus-logo.png') }}" 
-      alt="The Symbiotic Value Engine"
-      class="torus-image"
-      loading="lazy"
-    />
+    <picture>
+      <source srcset="{{ url_for('static', filename='images/roll-torus-logo.webp') }}" type="image/webp">
+      <img 
+        src="{{ url_for('static', filename='images/roll-torus-logo.png') }}" 
+        alt="The Symbiotic Value Engine"
+        class="torus-image"
+        loading="lazy"
+      />
+    </picture>
     <div class="torus-glow"></div>
   </div>
   

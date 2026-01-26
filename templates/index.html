@@ -74,26 +74,35 @@
         >
       </div>
 
-      <!-- Slideshow-Bilder -->
+      <!-- Slideshow-Bilder (WebP mit JPEG-Fallback) -->
       <div class="slideshow">
-        <img
-          src="{{ url_for('static', filename='images/noindex/header_nightview.jpg') }}"
-          class="slide active"
-          alt=""
-          loading="eager"
-        />
-        <img
-          src="{{ url_for('static', filename='images/noindex/header_gears.jpg') }}"
-          class="slide"
-          alt=""
-          loading="lazy"
-        />
-        <img
-          src="{{ url_for('static', filename='images/noindex/header_cockpit.jpg') }}"
-          class="slide"
-          alt=""
-          loading="lazy"
-        />
+        <picture>
+          <source srcset="{{ url_for('static', filename='images/noindex/header_nightview.webp') }}" type="image/webp">
+          <img
+            src="{{ url_for('static', filename='images/noindex/header_nightview.jpg') }}"
+            class="slide active"
+            alt=""
+            loading="eager"
+          />
+        </picture>
+        <picture>
+          <source srcset="{{ url_for('static', filename='images/noindex/header_gears.webp') }}" type="image/webp">
+          <img
+            src="{{ url_for('static', filename='images/noindex/header_gears.jpg') }}"
+            class="slide"
+            alt=""
+            loading="lazy"
+          />
+        </picture>
+        <picture>
+          <source srcset="{{ url_for('static', filename='images/noindex/header_cockpit.webp') }}" type="image/webp">
+          <img
+            src="{{ url_for('static', filename='images/noindex/header_cockpit.jpg') }}"
+            class="slide"
+            alt=""
+            loading="lazy"
+          />
+        </picture>
       </div>
 
       <!-- Headline-Text -->
@@ -129,19 +138,8 @@
       <!-- 2b. VORSCHAU-MITTE -->
       <main id="preview" aria-label="Vorschaufenster – Inhalt zur Auswahl">
         <div id="preview-content">
-          <figure class="profile-figure has-tooltip">
-            <img
-              src="{{ url_for('static', filename='images/karsten-profile.jpg') }}"
-              alt="Profilbild von Karsten Zenk"
-              class="profile-image"
-              loading="lazy"
-            />
-
-            <div id="whyme-bubble" class="whyme-bubble" aria-hidden="true">
-              {% if lang == 'de' %} {% include 'partials/whyme.de.html' %} {%
-              else %} {% include 'partials/whyme.en.html' %} {% endif %}
-            </div>
-          </figure>
+          <!-- 🌟 HEADER HOLOGRAM: WebP-optimiert (305KB), Delayed Init -->
+          {% include 'components/header_hologram.html' %}
 
           <!-- CTA unter dem Profilbild -->
           <div
@@ -194,7 +192,7 @@
     <div id="balloon-layer" aria-hidden="true"></div>
 
     <!-- 4. JAVASCRIPT -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
     <div id="kz-chatbot-widget">
       <button id="kz-chat-trigger" class="kz-orb" aria-label="Open Chat">
         <span class="kz-orb-icon">🤖</span>
@@ -247,7 +245,10 @@
     <!-- 🌀 TORUS LAUNCHER: Rollende Value Engine -->
     {% include 'components/torus_launcher.html' %}
 
+    <!-- 🌟 Header Hologram Script (Delayed Init nach window.onload) -->
+    <script src="{{ url_for('static', filename='js/header_hologram.js') }}" defer></script>
+    
     <!-- Torus Animation Script -->
-    <script src="{{ url_for('static', filename='js/torus_launcher.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/torus_launcher.js') }}" defer></script>
   </body>
 </html>
