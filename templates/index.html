@@ -80,16 +80,19 @@
           src="{{ url_for('static', filename='images/noindex/header_nightview.jpg') }}"
           class="slide active"
           alt=""
+          loading="eager"
         />
         <img
           src="{{ url_for('static', filename='images/noindex/header_gears.jpg') }}"
           class="slide"
           alt=""
+          loading="lazy"
         />
         <img
           src="{{ url_for('static', filename='images/noindex/header_cockpit.jpg') }}"
           class="slide"
           alt=""
+          loading="lazy"
         />
       </div>
 
@@ -131,6 +134,7 @@
               src="{{ url_for('static', filename='images/karsten-profile.jpg') }}"
               alt="Profilbild von Karsten Zenk"
               class="profile-image"
+              loading="lazy"
             />
 
             <div id="whyme-bubble" class="whyme-bubble" aria-hidden="true">
