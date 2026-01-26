@@ -10,6 +10,7 @@ from flask import (
     send_from_directory,
     make_response,
 )
+from flask_compress import Compress
 from dotenv import load_dotenv
 from google import genai
 from datetime import datetime
@@ -21,6 +22,7 @@ client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 CLIENT_PORTAL = "https://client-portal-4wir.onrender.com"
 
 app = Flask(__name__)
+Compress(app)
 
 # --- Static file caching: set long Cache-Control for image assets to improve repeat load times
 @app.after_request
