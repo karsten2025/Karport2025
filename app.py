@@ -22,6 +22,21 @@ CLIENT_PORTAL = "https://client-portal-4wir.onrender.com"
 
 app = Flask(__name__)
 
+# --- Static file caching: set long Cache-Control for image assets to improve repeat load times
+@app.after_request
+def add_static_cache_headers(response):
+    try:
+        path = request.path or ""
+        lower = path.lower()
+        if lower.startswith("/static/") and lower.split("?")[0].endswith((
+            ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico"
+        )):
+            # 1 year cache for immutable image assets
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return response
+    except Exception:
+        return response
+
 
 # 2. SPRACH-LOGIK
 @app.before_request
