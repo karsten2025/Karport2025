@@ -17,5 +17,3 @@ In the organizational area, Mr. Zenk is and has been active on behalf of the Yon
 In his former role as cash auditor, he was responsible for the proper auditing of the accounts and records. Mr. Zenk currently represents the interests of the Yong Association as Managing Director.
 
 In addition, Mr. Zenk is highly committed to the organization and delivery of association-related events.
-
-(Frank Maller, Treasurer)

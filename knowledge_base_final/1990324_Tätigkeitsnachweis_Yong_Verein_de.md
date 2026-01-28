@@ -17,5 +17,3 @@ Im organisatorischen Bereich ist und war Herr Zenk für den Yong-Verein tätig.
 In seiner früheren Funktion als Kassenprüfer oblag ihm die ordnungsgemäße Prüfung der Bücher. Zurzeit vertritt Herr Zenk als Geschäftsführer die Interessen des Yong-Vereins.
 
 Darüber hinaus engagiert sich Herr Zenk in hohem Maße bei der Durchführung vereinsbegleitender Veranstaltungen.
-
-(Frank Maller, Kassenwart)

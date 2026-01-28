@@ -558,6 +558,42 @@ document.addEventListener("DOMContentLoaded", function () {
       return msgDiv;
     };
 
+    // 2b. CTA-Button nach Bot-Antworten einfügen
+    const addCTA = () => {
+      const ctaContainer = document.createElement("div");
+      ctaContainer.className = "kz-cta-container";
+      
+      const ctaBtn = document.createElement("button");
+      ctaBtn.className = "kz-cta-btn";
+      ctaBtn.textContent = CURRENT_LANG === "de" ? "💼 Projekt besprechen" : "💼 Discuss project";
+      
+      ctaBtn.addEventListener("click", () => {
+        // Schließe Chat-Fenster
+        chatWindow.classList.remove("kz-active");
+        
+        // Scrolle zur Kontakt-Section
+        setTimeout(() => {
+          const contactSection = document.querySelector('[data-section="profile-contact"]');
+          if (contactSection) {
+            contactSection.click();
+          }
+          // Alternativ: direkt zum Kontaktformular scrollen
+          const contactContainer = document.querySelector(".contact-container");
+          if (contactContainer) {
+            contactContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 300);
+      });
+      
+      ctaContainer.appendChild(ctaBtn);
+      messagesArea.appendChild(ctaContainer);
+      
+      messagesArea.scrollTo({
+        top: messagesArea.scrollHeight,
+        behavior: "smooth",
+      });
+    };
+
     // 3. Initialisierung (Sprache & Begrüßung)
     const welcome = translations[CURRENT_LANG] || translations["de"];
 
@@ -598,6 +634,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         const data = await response.json();
         loadingMsg.textContent = data.reply || "Fehler in der Antwort.";
+
+        // CTA-Button nach Bot-Antwort einfügen
+        addCTA();
 
         // Nochmal scrollen, falls die Antwort sehr lang ist
         messagesArea.scrollTop = messagesArea.scrollHeight;
