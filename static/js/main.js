@@ -52,6 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const navLeft = document.querySelector(".nav-left");
   const navRight = document.querySelector(".nav-right");
   const initialContent = previewContent ? previewContent.innerHTML : "";
+  
+  // Flag: Wurde eine "echte" Seite geladen (z.B. Kontakt)?
+  let contentIsLocked = false;
 
   // Aktuelle Sprache bestimmen (aus data-lang oder ?lang=de|en)
   function getCurrentLang() {
@@ -86,6 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(function (html) {
         if (previewContent) {
           previewContent.innerHTML = html;
+          // Merke: Echte Seite geladen, nicht überschreiben bei Mouseout
+          contentIsLocked = true;
         }
       })
       .catch(function (e) {
@@ -118,6 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const fileExtension = filePath.split(".").pop().toLowerCase();
 
         if (previewContent) {
+          // Temporär unlock für Preview
+          contentIsLocked = false;
+          
           if (["jpg", "jpeg", "png", "gif"].indexOf(fileExtension) !== -1) {
             previewContent.innerHTML =
               '<img src="' +
@@ -184,7 +192,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (!navRight.contains(event.relatedTarget)) {
-        if (previewContent) {
+        // NUR zurücksetzen, wenn keine "echte" Seite geladen ist
+        if (previewContent && !contentIsLocked) {
           previewContent.innerHTML = initialContent;
         }
         globalTooltip.style.display = "none";
