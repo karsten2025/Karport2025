@@ -72,7 +72,8 @@ def detect_language(text):
     de_keywords = ['wie', 'was', 'wann', 'wo', 'wer', 'warum', 'welche', 'welcher', 'welches',
                    'kannst', 'könntest', 'würdest', 'solltest', 'bist', 'sind', 'war', 'waren',
                    'hast', 'hat', 'hatte', 'hatten', 'sage', 'zeige', 'erkläre', 'beschreibe',
-                   'sein', 'seine', 'ihrer', 'seinem']
+                   'sein', 'seine', 'ihrer', 'seinem', 'kennt', 'kenne', 'kennen', 'gibt',
+                   'gib', 'nenne', 'nennt', 'macht', 'mach', 'arbeitet', 'arbeit']
     
     # Zähle Keyword-Treffer
     en_count = sum(1 for keyword in en_keywords if f' {keyword} ' in f' {text_lower} ' or text_lower.startswith(keyword + ' '))
@@ -154,6 +155,9 @@ def ask_gemini():
     # Erkenne die Sprache der Benutzernachricht automatisch
     detected_lang = detect_language(user_message)
     
+    # DEBUG: Zeige erkannte Sprache im Log
+    print(f"🔍 LANGUAGE DETECTION: '{user_message[:50]}...' → {detected_lang}")
+    
     # Verwende die erkannte Sprache (nicht die Frontend-Sprache!)
     lang = detected_lang
 
@@ -167,10 +171,12 @@ def ask_gemini():
     if lang == 'de':
         system_prompt = f"""Du bist Karstens KI-Assistent. Heute ist der {today}.
 
-SPRACHE: Du MUSST in DEUTSCHER Sprache antworten!
-- Jedes Wort muss auf Deutsch sein
-- Keine englischen Begriffe verwenden
-- 100% deutschsprachige Antwort
+🇩🇪 KRITISCH - DEUTSCHE SPRACHE ERFORDERLICH:
+- Die Benutzerfrage ist auf DEUTSCH
+- Du MUSST ausnahmslos auf DEUTSCH antworten
+- JEDES Wort in deiner Antwort muss auf Deutsch sein
+- Wenn du auch nur ein einziges englisches Wort verwendest, ist die Antwort falsch
+- Selbst technische Begriffe auf Deutsch verwenden
 
 Wissensgrundlage:
 {kb_content}
@@ -178,19 +184,19 @@ Wissensgrundlage:
 Regeln:
 - Berechne das Alter basierend auf dem heutigen Datum
 - Bei fehlenden Infos: Verweise auf Karsten Zenk persönlich
-- WICHTIG: Antworte NUR auf Deutsch!"""
+- ABSOLUT KEINE englischen Wörter verwenden!"""
 
-        user_prompt = f"""DEUTSCH: {user_message}
-
-Antworte ausschließlich auf Deutsch!"""
+        user_prompt = f"""DEUTSCHE ANFRAGE (antworte auf Deutsch): {user_message}"""
         
     else:
         system_prompt = f"""You are Karsten's AI assistant. Today is {today}.
 
-LANGUAGE: You MUST respond in ENGLISH!
-- Every word must be in English
-- Do not use any German terms
-- 100% English language response
+🇬🇧 CRITICAL - ENGLISH LANGUAGE REQUIRED:
+- The user's question is in ENGLISH
+- You MUST respond exclusively in ENGLISH
+- EVERY word in your response must be in English
+- If you use even a single German word, the response is incorrect
+- Even technical terms must be in English
 
 Knowledge base:
 {kb_content}
@@ -198,11 +204,9 @@ Knowledge base:
 Rules:
 - Calculate age based on today's date
 - If info is missing: Refer to Karsten Zenk personally
-- IMPORTANT: Respond ONLY in English!"""
+- ABSOLUTELY NO German words allowed!"""
 
-        user_prompt = f"""ENGLISH: {user_message}
-
-Respond exclusively in English!"""
+        user_prompt = f"""ENGLISH REQUEST (respond in English): {user_message}"""
 
     try:
         response = client.models.generate_content(
