@@ -228,12 +228,12 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       text: {
         de: {
-          title: "Ein PMO, das den Laden zusammenhält",
-          body: "Integration von strategischer Vision, taktischer Umsetzung und operativer Exzellenz: Das PMI-OPM-Modell und die PMI-PMOCP-Zertifizierung – ein duales Framework für den Erfolg von PMOs, das messbare Ergebnisse liefert, die organisatorische Agilität stärkt und den langfristigen Wert von Produkten, Portfolios, Programmen und Projekten maximiert.<br><br><a href='https://pmo-value-generator-8aqm.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Mehr erfahren</a>",
+          title: "Executive SE Summary",
+          body: "    „Der PMO Value Generator definiert die Klasse der Socio-Cognitive Enterprise Engines. Im Gegensatz zu herkömmlichen Reporting-Tools, die lediglich Zustände archivieren, fungiert dieses System als biomimetischer Regulator. Es transformiert unstrukturierte digitale Fingerabdrücke (Azure/SAP/etc.) mittels Semantic Embedding in eine steuerbare Enterprise-Symmetrie. Wir wenden die Ideen der INCOSE/ISO15288/PMI auf die Domäne der strategischen Wertschöpfung an.“<br><br><a href='https://pmo-value-generator-8aqm.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Mehr erfahren</a>",
         },
         en: {
-          title: "A PMO That Holds Things Together",
-          body: "Integrating Strategic Vision, Tactical Execution, and Operational Excellence: The PMI OPM Model and PMI-PMOCP Certification—A Dual Framework for PMO Success that drives measurable results, enhances organizational agility, and maximizes the long-term value of products, portfolios, programs, and projects.<br><br><a href='https://pmo-value-generator-8aqm.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Learn more</a>",
+          title: "Executive SE Summary",
+          body: "The PMO Value Generator defines the class of Socio-Cognitive Enterprise Engines. In contrast to conventional reporting tools that merely archive historical states, this system functions as a biomimetic regulator. Leveraging Semantic Embedding, it transforms unstructured digital footprints from Azure and SAP into a controllable enterprise symmetry. We are applying the ideas of INCOSE/ISO15288/PMI to the domain of strategic value creation.<br><br><a href='https://pmo-value-generator-8aqm.vercel.app/' target='_blank' style='color:#ff7e5f; font-weight:bold; text-decoration:none;'>➔ Learn more</a>",
         },
       },
     },
