@@ -283,17 +283,6 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       },
     },
-    {
-      id: "donate",
-      xPercent: 72,
-      riseDurationSeconds: 22,
-      scaleStart: 0.5,
-      scaleEnd: 3.0,
-      theme: "green", // wichtig für die CSS-Regeln
-      delayMs: 10500, // 10,5s nach PMO-Setup
-      href: "/donate", // Klick führt zur Spendenseite (mit ?lang=…)
-      text: {}, // aktuell kein Dialogtext nötig
-    },
   ];
 
   function spawnBalloon(config, lang) {

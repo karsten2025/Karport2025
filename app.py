@@ -256,24 +256,7 @@ def datenschutz():
     return render_template("partials/datenschutz.de.html")
 
 
-# 8. SPENDEN-LOGIK (Ihre Referenz - PayPal-Funktionalität)
-@app.route("/donate")
-def donate():
-    lang = request.args.get("lang", "de")
-    if lang not in ("de", "en"):
-        lang = "de"
-    return render_template("donate.html", lang=lang)
-
-
-@app.route("/donate/thanks")
-def donate_thanks():
-    lang = request.args.get("lang", "de")
-    if lang not in ("de", "en"):
-        lang = "de"
-    return render_template("donate_thanks.html", lang=lang)
-
-
-# 9. SYSTEM-ROUTEN & PORTAL-REDIRECTS
+# 8. SYSTEM-ROUTEN & PORTAL-REDIRECTS
 @app.route("/load/<section>")
 def load_section(section):
     try:

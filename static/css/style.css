@@ -1032,67 +1032,6 @@ body {
   margin-top: 0.08em;
 }
 
-/* Grüner Donate-Ballon – eigener Farbverlauf + Glühen */
-.balloon--theme-green .balloon__inner {
-  background: radial-gradient(
-    circle at 30% 20%,
-    #d1fae5 0,
-    #34d399 35%,
-    #059669 100%
-  );
-  box-shadow: 0 18px 35px rgba(16, 185, 129, 0.35);
-  animation: donate-glow 2.8s ease-in-out infinite;
-}
-
-@keyframes donate-glow {
-  0% {
-    box-shadow: 0 18px 35px rgba(16, 185, 129, 0.3);
-  }
-  50% {
-    box-shadow: 0 24px 48px rgba(16, 185, 129, 0.7);
-  }
-  100% {
-    box-shadow: 0 18px 35px rgba(16, 185, 129, 0.3);
-  }
-}
-
-/* Handshake – höher über der Schrift im grünen Donate-Ballon */
-.balloon--theme-green .balloon__inner::before {
-  content: "🤝";
-  position: absolute;
-  top: 16%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.65rem;
-  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
-  z-index: 1;
-}
-
-/* Herz – unter der Schrift im grünen Donate-Ballon */
-.balloon--theme-green .balloon__inner::after {
-  content: "❤️";
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.65rem;
-  animation: donate-heart 1.25s ease-in-out infinite;
-  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
-  z-index: 1;
-}
-
-@keyframes donate-heart {
-  0% {
-    transform: translateX(-50%) scale(1);
-  }
-  50% {
-    transform: translateX(-50%) scale(1.2);
-  }
-  100% {
-    transform: translateX(-50%) scale(1);
-  }
-}
-
 /* Schnur */
 .balloon__string {
   position: absolute;
