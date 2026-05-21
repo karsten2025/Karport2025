@@ -1,14 +1,37 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="{{ lang }}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Karsten Zenk – Dipl.-Ing.(FH) | PMI Certified Professional</title>
-
+    {% if lang == 'en' %}
+    <title>Karsten Zenk | B2B Project Management &amp; AI Governance</title>
     <meta
       name="description"
-      content="Produkte. Projekte. Prozesse. Transformation. Erfolgreich gesteuert"
+      content="Your partner for complex industrial transformations &amp; engineering. Harnessing complexity and increasing project probability through the Value Operating System (V-OS)."
     />
+    <meta
+      property="og:title"
+      content="Karsten Zenk – Adaptive Project Governance &amp; V-OS for Industry"
+    />
+    <meta
+      property="og:description"
+      content="Harnessing complexity. Increasing project probability. Your partner for resilient governance in industrial and mechanical engineering."
+    />
+    {% else %}
+    <title>Karsten Zenk | B2B Projektmanagement &amp; KI-Governance Industrie</title>
+    <meta
+      name="description"
+      content="Ihr Partner für komplexe Industrie-Transformationen &amp; Anlagenbau. Mit dem Value Operating System (V-OS) machen wir Komplexität nutzbar &amp; Projekterfolge wahrscheinlicher."
+    />
+    <meta
+      property="og:title"
+      content="Karsten Zenk – Adaptive Projektsteuerung &amp; V-OS für die Industrie"
+    />
+    <meta
+      property="og:description"
+      content="Komplexität nutzen. Projekterfolge wahrscheinlicher machen. Ihr Partner für krisenfeste Steuerung im industriellen Anlagen- und Maschinenbau."
+    />
+    {% endif %}
     <meta name="author" content="Karsten Zenk" />
     <link
       rel="icon"
@@ -17,17 +40,10 @@
     />
 
     <meta
-      property="og:title"
-      content="Karsten Zenk – Dipl.-Ing(FH)-PMP®-PMI-ACP®-PMO-CP™-PMI-CPMAI™"
-    />
-    <meta
-      property="og:description"
-      content="Karsten Zenk - Produkte. Projekte. Prozesse. Transformation. Erfolgreich gesteuert"
-    />
-    <meta
       property="og:image"
-      content="{{ url_for('static', filename='images/karsten-profile.jpg', _external=True) }}"
+      content="https://zenk-pm-now.de/static/images/karsten-profile.jpg"
     />
+    <meta property="og:url" content="https://zenk-pm-now.de/" />
     <meta property="og:type" content="website" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,7 +57,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-    <meta name="theme-color" content="#222" />
+    <meta name="theme-color" content="#1a1a1a" />
   </head>
 
   <body data-lang="{{ lang }}">
@@ -149,8 +165,7 @@
             aria-label="Schnelleinstieg Client-Portal"
           >
             <a class="cta-btn" href="/explore">
-              {% if lang == 'de' %} Jetzt Anliegen skizzieren {% else %} Sketch
-              your request {% endif %}
+              {% if lang == 'de' %} Transformations-Briefing öffnen {% else %} Open Transformation Briefing {% endif %}
             </a>
           </div>
 

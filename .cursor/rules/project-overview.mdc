@@ -1,0 +1,94 @@
+---
+description: Projekt-Kontext für das Karsten-Zenk-Portfolio – wird bei jeder Session automatisch geladen
+alwaysApply: true
+---
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  WAS DIESE DATEI MACHT (Erklärung für Menschen ohne Vorkenntnisse)
+  ║
+  ║  Das hier ist eine "Cursor Rule" – eine Datei, die dem KI-Assistenten
+  ║  (Cursor/Claude) bei JEDER neuen Chat-Session automatisch mitgegeben wird,
+  ║  damit er sofort weiß, worum es in diesem Projekt geht.
+  ║
+  ║  Ohne diese Datei müsstest du dem KI jedes Mal von vorne erklären:
+  ║  "Das ist ein Flask-Projekt, es gibt eine Knowledge Base, die Sprache
+  ║  funktioniert so und so, deployed wird auf Render..."
+  ║
+  ║  Mit dieser Datei weiß der KI das sofort – und du sparst Zeit und
+  ║  Kosten (weniger Token = günstigere Anfragen).
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+# Karsten Zenk – Portfolio-Website: Projekt-Kontext
+
+## Was dieses Projekt ist
+Persönliche Portfolio-Website für **Karsten Zenk** (Projektmanager / IT-Consultant).
+- **Live-URL:** https://zenk-pm-now.de
+- **Hosting:** Render.com (automatisches Deploy bei `git push origin main`)
+- **Lokale Entwicklung:** `./start_flask.sh` → http://localhost:5001
+
+## Tech-Stack
+| Schicht | Technologie |
+|---|---|
+| Backend | Python 3, Flask 3.x, Gunicorn |
+| KI-Chatbot | Google Gemini 2.0 Flash (`google-genai`) |
+| Templates | Jinja2 (HTML-Partials, dynamisch geladen) |
+| Komprimierung | Flask-Compress (gzip) |
+| Spracherkennung | `langdetect` + eigenes Keyword-Matching |
+| Deployment | Render.com via Git (Procfile vorhanden) |
+
+## Verzeichnisstruktur (das Wichtigste)
+```
+app.py                    ← Haupt-App, Sections 1–10 nummeriert
+templates/
+  index.html              ← Single-Page-Shell
+  partials/               ← Alle Inhalts-Sektionen als einzelne HTML-Dateien
+    header.de.html / header.en.html   ← IMMER als Sprachpaar vorhanden!
+    profile-about.de.html / .en.html
+    accordion.de.html / .en.html
+    ... (alle Partials existieren als .de.html + .en.html)
+    header_hologram.html  ← sprachunabhängige Spezial-Komponenten
+    torus_launcher.html
+static/
+  css/ js/ images/ fonts/ certificates/
+knowledge_base_final/     ← Wissens-Datenbank für den Chatbot (184+ Dateien)
+  *_de.md / *_en.md       ← IMMER als Sprachpaar vorhanden!
+inputs/                   ← Neue Dokumente hier ablegen (für KB-Pipeline)
+```
+
+## Mehrsprachigkeit (DE/EN) – Kernprinzip
+- Sprache wird via URL-Parameter gesteuert: `?lang=de` oder `?lang=en`
+- Standard: Deutsch (`de`)
+- In `app.py` wird `g.lang` per `@app.before_request` gesetzt
+- Partials werden dynamisch geladen: `/load/<section>` → `partials/<section>.<lang>.html`
+- **Regel:** Jedes neue Partial muss als `.de.html` UND `.en.html` angelegt werden
+
+## Chatbot-Logik (`/ask`-Route)
+- Erkennt Sprache der Nutzerfrage automatisch (Keyword-Matching → langdetect-Fallback)
+- Lädt Knowledge Base aus `knowledge_base_final/` für die erkannte Sprache
+- Gibt Antwort + `detected_language` + `frontend_language` zurück
+- Model: `gemini-2.0-flash`
+
+## Zwei virtuelle Umgebungen (2-VEnv-Architektur)
+```
+.venv/            ← Flask-Server (50 MB) – für den Web-Betrieb
+.venv_pipeline/   ← Dokument-Verarbeitung (2 GB) – nur für KB-Updates
+```
+- Flask starten: `source .venv/bin/activate && flask run`
+- KB-Update: `source .venv_pipeline/bin/activate && python process_new_document.py`
+- **Niemals** `.venv_pipeline` in Git committen (zu groß)
+
+## Deployment-Workflow
+```bash
+git add .
+git commit -m "feat/fix/perf: kurze Beschreibung"
+git push origin main   ← Render deployed automatisch
+```
+Rollback-Dokumentation: `ROLLBACK_*.md`-Dateien im Root
+
+## Wichtige Konventionen
+- `app.py` ist in nummerierte Sections (1–10) gegliedert – diese Struktur beibehalten
+- Keine direkte Bearbeitung von `knowledge_base_final/`-Dateien – immer über Pipeline
+- Neue KB-Dokumente: in `inputs/` ablegen, dann `./update_knowledge.sh inputs/datei.pdf`
+- `.env` enthält `GEMINI_API_KEY` und ggf. `OPENAI_API_KEY` – nie committen

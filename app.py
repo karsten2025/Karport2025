@@ -253,7 +253,7 @@ def impressum():
 
 @app.route("/datenschutz")
 def datenschutz():
-    return render_template("partials/datenschutz.de.html")
+    return render_template(f"partials/datenschutz.{g.lang}.html")
 
 
 # 8. SYSTEM-ROUTEN & PORTAL-REDIRECTS

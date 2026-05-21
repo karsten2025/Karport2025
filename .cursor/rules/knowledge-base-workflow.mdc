@@ -1,0 +1,73 @@
+---
+description: Regeln für das Knowledge-Base-System – wird aktiv wenn KB-Dateien geöffnet sind
+globs: knowledge_base_final/**
+alwaysApply: false
+---
+
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  WAS DIESE DATEI MACHT (Erklärung für Menschen ohne Vorkenntnisse)
+  ║
+  ║  Diese Rule ist die "Spezialistin" für die Knowledge Base.
+  ║  Sie wird nur dann aktiviert, wenn du an Dateien im Ordner
+  ║  knowledge_base_final/ arbeitest.
+  ║
+  ║  Sie erinnert den KI daran:
+  ║  - wie die KB aufgebaut ist
+  ║  - welche Regeln beim Bearbeiten gelten
+  ║  - wie der Update-Prozess funktioniert
+  ║  - was NICHT getan werden darf
+  ║
+  ║  Ohne diese Regel könnte der KI versehentlich KB-Dateien direkt
+  ║  bearbeiten oder nur eine Sprache updaten – beides würde Probleme
+  ║  im Chatbot verursachen.
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+# Knowledge Base – Workflow & Konventionen
+
+## Aufbau der Knowledge Base
+- Speicherort: `knowledge_base_final/`
+- **Alle Dateien existieren immer als Sprachpaar:**
+  ```
+  Lebenslauf_Karsten_Zenk_de.md   ← Deutsch
+  Lebenslauf_Karsten_Zenk_en.md   ← Englisch
+  ```
+- Dateinamen-Schema: `<DokumentName>_de.md` / `<DokumentName>_en.md`
+- Derzeit ~184+ Dateien (~92 Dokumente × 2 Sprachen)
+
+## ⛔ Was NICHT getan werden darf
+- KB-Dateien **niemals direkt bearbeiten** – sie werden von der Pipeline erzeugt
+- **Niemals nur eine Sprache** updaten – immer DE + EN synchron halten
+- `inputs_out/` ist ein temporärer Arbeitsordner der Pipeline – nicht manuell befüllen
+
+## ✅ Korrekter Workflow: Neues Dokument hinzufügen
+```bash
+# Schritt 1: Dokument in inputs/ ablegen
+cp ~/Downloads/neues_zertifikat.pdf inputs/
+
+# Schritt 2: Pipeline starten (übersetzt automatisch in DE + EN)
+./update_knowledge.sh inputs/neues_zertifikat.pdf
+
+# Schritt 3: Flask neu starten (lädt KB automatisch neu)
+./start_flask.sh
+
+# Schritt 4: Testen im Chatbot, dann committen
+git add knowledge_base_final/
+git commit -m "Add: neues_zertifikat"
+git push origin main
+```
+
+## Unterstützte Eingabeformate
+- PDF, DOCX, JPG/PNG (OCR via Marker-PDF in `.venv_pipeline`)
+
+## Wie der Chatbot die KB nutzt
+Die Funktion `load_karsten_knowledge(lang)` in `app.py` lädt alle `*_de.md` oder `*_en.md`
+Dateien aus `knowledge_base_final/` und kombiniert sie zu einem einzigen Kontext-String
+für den Gemini-Prompt. Das Laden passiert bei jeder Chat-Anfrage neu.
+
+## Wenn manuell ein KB-Inhalt korrigiert werden muss
+Ausnahmsweise direkte Bearbeitung erlaubt, aber:
+1. Beide Sprachversionen (`_de.md` + `_en.md`) anpassen
+2. Änderung dokumentieren (Kommentar in der Datei)
+3. Nach Möglichkeit anschließend über die Pipeline neu generieren
