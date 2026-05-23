@@ -208,6 +208,8 @@
 
     <!-- 4. JAVASCRIPT -->
     <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <!-- WARTUNGSMODUS: Original-Chatbot auskommentiert – nach KB-Überarbeitung wiederherstellen -->
+    <!--
     <div id="kz-chatbot-widget">
       <button id="kz-chat-trigger" class="kz-orb" aria-label="Open Chat">
         <span class="kz-orb-icon">🤖</span>
@@ -254,6 +256,29 @@
             </svg>
           </button>
         </form>
+      </div>
+    </div>
+    -->
+
+    <!-- Wartungshinweis Chatbot -->
+    <div id="kz-chatbot-widget">
+      <button id="kz-chat-trigger" class="kz-orb"
+        onclick="document.getElementById('kz-maint').style.display='flex'"
+        aria-label="Assistent in Wartung" style="opacity:0.75;">
+        <span class="kz-orb-icon">🔧</span>
+      </button>
+      <div id="kz-maint" style="display:none; position:fixed; bottom:6rem; right:1.5rem; z-index:9999;
+           background:#fff; border:1px solid #ddd; border-radius:12px; padding:1.2rem 1.5rem;
+           max-width:290px; box-shadow:0 4px 20px rgba(0,0,0,0.15); font-size:0.9rem; line-height:1.6;
+           flex-direction:column;">
+        <strong>🔧 Assistent wird überarbeitet</strong><br><br>
+        Der KI-Assistent wird gerade verbessert und steht in Kürze wieder zur Verfügung.<br><br>
+        <a href="mailto:info@zenk-pm-now.de" style="color:#111; font-weight:600;">Direkt Kontakt aufnehmen →</a>
+        <button onclick="document.getElementById('kz-maint').style.display='none'"
+          style="display:block; margin-top:0.8rem; background:none; border:none; color:#999;
+                 cursor:pointer; font-size:0.8rem; text-align:left; padding:0;">
+          Schließen
+        </button>
       </div>
     </div>
 
